@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign In - Silung Coffee</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <!-- Firebase SDKs -->
+  <script type="module">
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    function showMessageBox(message, type = 'info') {
+        const messageBox = document.getElementById('messageBox');
+        const messageText = document.getElementById('messageText');
+        messageText.textContent = message;
+        messageBox.className = `message-box ${type}`; 
+        messageBox.style.display = 'block';
+
+        setTimeout(() => {
+            messageBox.style.display = 'none';
+        }, 3000);
+    }
+
+    // Handle authentication state changes to redirect if already logged in
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            // User is signed in, redirect to the main page
+            console.log("User is signed in:", user.uid); // Debugging log
+            window.location.href = 'index.html'; 
+        } else {
+            console.log("User is not signed in."); // Debugging log
+        }
+    });
+
+    // Handle Sign In form submission
+    document.addEventListener('DOMContentLoaded', () => {
+        const signinForm = document.getElementById('signinForm');
+        if (signinForm) {
+            signinForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = signinForm['signinEmail'].value;
+                const password = signinForm['signinPassword'].value;
+
+                try {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    showMessageBox('Sign in successful! Redirecting...', 'success');
+                    // The onAuthStateChanged listener above will now handle the redirection
+                } catch (error) {
+                    console.error("Sign in error:", error); // Log the actual error
+                    showMessageBox(`Sign in failed: ${error.message}`, 'error');
+                }
+            });
+        }
+    });
+  </script>
+</head>
+<body class="auth-page"> <!-- Uses the same styling class as signup.html -->
+  <!-- Custom Message Box -->
+  <div id="messageBox" class="message-box">
+    <span id="messageText"></span>
+  </div>
+
+  <div class="auth-container">
+    <div class="auth-modal-content">
+      <h2>Sign In to Silung Coffee</h2>
+      <form id="signinForm">
+        <label for="signinEmail">Email:</label>
+        <input type="email" id="signinEmail" required>
+        <label for="signinPassword">Password:</label>
+        <input type="password" id="signinPassword" required>
+        <button type="submit">Sign In</button>
+      </form>
+      <p class="auth-switch">Don't have an account? <a href="sign-up.html">Sign Up here</a></p>
+    </div>
+  </div>
+
+</body>
+</html>
