@@ -2,90 +2,110 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sign Up - Silung Coffee</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up - Local Business</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-  <!-- Firebase SDKs -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-    // Global variables for Firebase configuration, provided by the environment
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    // Function to show a custom message box instead of alert()
-    function showMessageBox(message, type = 'info') {
-        const messageBox = document.getElementById('messageBox');
-        const messageText = document.getElementById('messageText');
-        messageText.textContent = message;
-        messageBox.className = `message-box ${type}`; // Add type for styling (e.g., 'error', 'success')
-        messageBox.style.display = 'block';
-
-
-        setTimeout(() => {
-            messageBox.style.display = 'none';
-        }, 3000);
-    }
-
-    // Handle Sign Up
-    document.addEventListener('DOMContentLoaded', () => {
-        const signupForm = document.getElementById('signupForm');
-        if (signupForm) {
-            signupForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const email = signupForm['signupEmail'].value;
-                const password = signupForm['signupPassword'].value;
-
-                try {
-                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                    // Store user data in Firestore
-                    const userProfileRef = doc(db, `artifacts/${appId}/users/${userCredential.user.uid}/user_profiles`, "profile");
-                    await setDoc(userProfileRef, {
-                        email: email,
-                        createdAt: new Date()
-                    });
-                    showMessageBox('Sign up successful! Please sign in now.', 'success');
-                    // Redirect to the sign-in page after successful sign-up
-                    setTimeout(() => {
-                        window.location.href = 'sign-in.html';
-                    }, 1500);
-                } catch (error) {
-                    console.error("Sign up error:", error);
-                    showMessageBox(`Sign up failed: ${error.message}`, 'error');
-                }
-            });
-        }
-    });
-  </script>
 </head>
-<body class="auth-page"> <!-- Added a class for specific styling if needed -->
-  <!-- Custom Message Box -->
-  <div id="messageBox" class="message-box">
-    <span id="messageText"></span>
-  </div>
-
-  <div class="auth-container">
-    <div class="auth-modal-content">
-      <h2>Sign Up for Silung Coffee</h2>
-      <form id="signupForm">
-        <label for="signupEmail">Email:</label>
-        <input type="email" id="signupEmail" required>
-        <label for="signupPassword">Password:</label>
-        <input type="password" id="signupPassword" required minlength="6">
-        <button type="submit">Sign Up</button>
-      </form>
-      <p class="auth-switch">Already have an account? <a href="sign-in.html">Sign In here</a></p>
+<body class="auth-page">
+  <div class="signup-wrapper">
+    <form class="signup-form" id="userForm">
+      <h2>Customer Sign Up</h2>
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" required />
+      </div>
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" required />
+      </div>
+      <div class="form-group">
+        <label>Gender</label>
+        <div class="gender-group">
+          <label><input type="radio" name="gender" value="Male" required /> Male</label>
+          <label><input type="radio" name="gender" value="Female" /> Female</label>
+          <label><input type="radio" name="gender" value="Other" /> Other</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="address">Address</label>
+        <textarea id="address" rows="2"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="contact">Contact Number</label>
+        <input type="tel" id="contact" />
+      </div>
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" required />
+      </div>
+      <div class="form-group">
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" />
+      </div>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" required />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" required minlength="6" />
+        <label class="toggle-password">
+        <input type="checkbox" onclick="togglePassword()" /> Show Password
+      </label>
+      </div>
+      <div class="form-buttons">
+        <button type="submit">Submit</button>
+        <button type="reset">Reset</button>
+      </div>
+    </form>
+    <div class="output-box" id="outputBox">
+      <h3>Submitted Information</h3>
+      <div id="displayArea">No data submitted yet.</div>
     </div>
   </div>
 
+  <script>
+    const form = document.getElementById('userForm');
+    const displayArea = document.getElementById('displayArea');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const data = {
+        firstName: form.firstName.value,
+        lastName: form.lastName.value,
+        gender: form.gender.value,
+        address: form.address.value,
+        contact: form.contact.value,
+        email: form.email.value,
+        dob: form.dob.value,
+        username: form.username.value,
+        password: form.password.value
+      };
+
+      displayArea.innerHTML = `
+        <p><strong>First Name:</strong> ${data.firstName}</p>
+        <p><strong>Last Name:</strong> ${data.lastName}</p>
+        <p><strong>Gender:</strong> ${data.gender}</p>
+        <p><strong>Address:</strong> ${data.address}</p>
+        <p><strong>Contact:</strong> ${data.contact}</p>
+        <p><strong>Email:</strong> ${data.email}</p>
+        <p><strong>Date of Birth:</strong> ${data.dob}</p>
+        <p><strong>Username:</strong> ${data.username}</p>
+        <p><strong>Password:</strong> ${data.password}</p>
+      `;
+
+      form.reset();
+    });
+
+    function togglePassword() {
+      const passwordField = document.getElementById("password");
+      if (passwordField.type === "password") {
+        passwordField.type = "text";
+      } else {
+        passwordField.type = "password";
+      }
+    }
+  </script>
 </body>
 </html>
