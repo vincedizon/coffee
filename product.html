@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Silung Coffee - Menu</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    /* New Product Page Styles */
+    .product-page {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .search-container {
+      margin: 20px auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      max-width: 500px;
+      gap: 10px;
+    }
+
+    .search-container input {
+      width: 100%;
+      padding: 10px 15px;
+      border-radius: 20px;
+      border: 1px solid #E9CBA7;
+      background-color: #2F3D2D;
+      color: #FEFAE0;
+      font-size: 1em;
+      outline: none;
+    }
+
+    .search-container input::placeholder {
+      color: #a3a3a3;
+    }
+    
+    .cart-summary {
+        text-align: right;
+        max-width: 800px;
+        margin: 20px auto;
+        color: #FFDBA4;
+        font-weight: bold;
+        font-size: 1.2em;
+        border-bottom: 2px solid #E9CBA7;
+        padding-bottom: 10px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .delete-cart-btn {
+        background-color: #d9534f;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 0.8em;
+        transition: background-color 0.3s ease;
+    }
+
+    .delete-cart-btn:hover {
+        background-color: #c9302c;
+    }
+
+    .product-section {
+        max-width: 800px;
+        margin: 0 auto 40px;
+        text-align: left;
+    }
+
+    .product-section h3 {
+        color: #FFDBA4;
+        border-bottom: 2px solid #E9CBA7;
+        padding-bottom: 5px;
+    }
+
+    .product-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .product-item {
+        background-color: #2F3D2D;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: transform 0.2s;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-item:hover {
+        transform: translateY(-3px);
+    }
+
+    .product-details {
+        flex-grow: 1;
+    }
+
+    .product-name {
+        font-weight: bold;
+        color: #FFDBA4;
+        font-size: 1.1em;
+    }
+
+    .product-description, .product-price {
+        font-size: 0.9em;
+        color: #ccc;
+    }
+
+    .product-price {
+        font-weight: bold;
+        color: #E9CBA7;
+        margin-left: 15px;
+        flex-shrink: 0;
+    }
+
+    .product-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-left: 20px;
+        flex-shrink: 0;
+    }
+
+    .product-actions button {
+      background-color: #FFDBA4;
+      color: #1E392A;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .product-actions button.remove-btn {
+      background-color: #d9534f;
+      color: white;
+    }
+
+    .product-actions button:hover {
+      background-color: #E9CBA7;
+    }
+
+    .product-actions button.remove-btn:hover {
+        background-color: #c9302c;
+    }
+
+    /* Unique Rating Style */
+    .rating-system .rating-icon {
+        color: #444;
+        cursor: pointer;
+        font-size: 20px;
+        transition: color 0.3s;
+    }
+    .rating-system .rating-icon.rated {
+        color: #E9CBA7;
+    }
+
+    /* Message Box */
+    .message-box {
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #333;
+      color: #fff;
+      padding: 15px 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.5s, transform 0.5s;
+    }
+
+    .message-box.show {
+        display: block;
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="hamburger">&#9776;</div>
+      <a href="index.html">Home</a>
+      <a href="feature.html">Features</a>
+      <a href="product.html" class="active">Menu</a>
+      <a href="contact.html">Contact Us</a>
+      <a href="sign-up.html">Sign Up</a>
+      <div id="user-status"></div>
+    </nav>
+  </header>
+
+  <section class="hero-section" id="hero-features">
+    <div class="hero-content-overlay">
+      <h1 class="page-title">OUR MENU</h1>
+    </div>
+  </section>
+
+  <div class="product-page">
+    <div class="search-container">
+      <input type="text" id="search-input" placeholder="Search for products...">
+    </div>
+    
+    <div class="cart-summary">
+        Cart Total: <span id="cart-total">P0.00</span>
+        <button class="delete-cart-btn" onclick="clearCart()">Delete Cart</button>
+    </div>
+
+    <div class="product-section">
+      <h3>Signature Drinks</h3>
+      <ul class="product-list" id="product-list">
+        <li class="product-item" data-product-name="Silung Black" data-product-price="140">
+          <div class="product-details">
+            <span class="product-name">Silung Black</span>
+            <p class="product-description">espresso, water, tiramisu foam</p>
+          </div>
+          <span class="product-price">P140</span>
+          <div class="product-actions">
+            <div class="rating-system">
+              <span class="rating-icon">&#x2615;</span>
+            </div>
+            <button onclick="addToCart('Silung Black')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Silung Black')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Silung White" data-product-price="140">
+          <div class="product-details">
+            <span class="product-name">Silung White</span>
+            <p class="product-description">espresso, milk, tiramisu foam</p>
+          </div>
+          <span class="product-price">P140</span>
+          <div class="product-actions">
+            <div class="rating-system">
+              <span class="rating-icon">&#x2615;</span>
+            </div>
+            <button onclick="addToCart('Silung White')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Silung White')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Spanish Latte" data-product-price="130">
+          <div class="product-details">
+            <span class="product-name">Spanish Latte</span>
+            <p class="product-description">espresso, condensed milk</p>
+          </div>
+          <span class="product-price">P130</span>
+          <div class="product-actions">
+            <div class="rating-system">
+              <span class="rating-icon">&#x2615;</span>
+            </div>
+            <button onclick="addToCart('Spanish Latte')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Spanish Latte')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Seasalt Latte" data-product-price="130">
+          <div class="product-details">
+            <span class="product-name">Seasalt Latte</span>
+            <p class="product-description">espresso, milk, sea salt foam</p>
+          </div>
+          <span class="product-price">P130</span>
+          <div class="product-actions">
+            <div class="rating-system">
+              <span class="rating-icon">&#x2615;</span>
+            </div>
+            <button onclick="addToCart('Seasalt Latte')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Seasalt Latte')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Salted Caramel" data-product-price="130">
+          <div class="product-details">
+            <span class="product-name">Salted Caramel</span>
+            <p class="product-description">espresso, milk, caramel, foam</p>
+          </div>
+          <span class="product-price">P130</span>
+          <div class="product-actions">
+            <div class="rating-system">
+              <span class="rating-icon">&#x2615;</span>
+            </div>
+            <button onclick="addToCart('Salted Caramel')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Salted Caramel')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Roasted Almond" data-product-price="140">
+          <div class="product-details">
+            <span class="product-name">Roasted Almond</span>
+            <p class="product-description">espresso, milk, almond syrup, foam</p>
+          </div>
+          <span class="product-price">P140</span>
+          <div class="product-actions">
+            <div class="rating-system">
+              <span class="rating-icon">&#x2615;</span>
+            </div>
+            <button onclick="addToCart('Roasted Almond')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Roasted Almond')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Biscoff Latte" data-product-price="140">
+          <div class="product-details">
+            <span class="product-name">Biscoff Latte</span>
+            <p class="product-description">espresso, milk, biscoff spread, foam</p>
+          </div>
+          <span class="product-price">P140</span>
+          <div class="product-actions">
+            <div class="rating-system">
+              <span class="rating-icon">&#x2615;</span>
+            </div>
+            <button onclick="addToCart('Biscoff Latte')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Biscoff Latte')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Toasted Mallows" data-product-price="140">
+          <div class="product-details">
+            <span class="product-name">Toasted Mallows</span>
+            <p class="product-description">espresso, milk, mallow syrup, oats</p>
+          </div>
+          <span class="product-price">P140</span>
+          <div class="product-actions">
+            <div class="rating-system">
+              <span class="rating-icon">&#x2615;</span>
+            </div>
+            <button onclick="addToCart('Toasted Mallows')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Toasted Mallows')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Dark Choco Oats" data-product-price="160">
+          <div class="product-details">
+            <span class="product-name">Dark Choco Oats</span>
+            <p class="product-description">dark chocolate, oat milk, oats</p>
+          </div>
+          <span class="product-price">P160</span>
+          <div class="product-actions">
+            <div class="rating-system">
+              <span class="rating-icon">&#x2615;</span>
+            </div>
+            <button onclick="addToCart('Dark Choco Oats')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Dark Choco Oats')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Mocha" data-product-price="130">
+          <div class="product-details">
+            <span class="product-name">Mocha</span>
+            <p class="product-description">espresso, milk, dark chocolate</p>
+          </div>
+          <span class="product-price">P130</span>
+          <div class="product-actions">
+            <div class="rating-system">
+              <span class="rating-icon">&#x2615;</span>
+            </div>
+            <button onclick="addToCart('Mocha')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Mocha')">Remove</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="product-section">
+      <h3>Classics</h3>
+      <ul class="product-list">
+        <li class="product-item" data-product-name="White Mocha" data-product-price="130">
+          <div class="product-details">
+            <span class="product-name">White Mocha</span>
+            <p class="product-description">espresso, milk, white chocolate</p>
+          </div>
+          <span class="product-price">P130</span>
+          <div class="product-actions">
+            <button onclick="addToCart('White Mocha')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('White Mocha')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Cappuccino" data-product-price="120">
+          <div class="product-details">
+            <span class="product-name">Cappuccino</span>
+            <p class="product-description">espresso, milk, foam</p>
+          </div>
+          <span class="product-price">P120</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Cappuccino')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Cappuccino')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Cafe Latte" data-product-price="120">
+          <div class="product-details">
+            <span class="product-name">Cafe Latte</span>
+            <p class="product-description">espresso, milk, foam</p>
+          </div>
+          <span class="product-price">P120</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Cafe Latte')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Cafe Latte')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Americano" data-product-price="120">
+          <div class="product-details">
+            <span class="product-name">Americano</span>
+            <p class="product-description">espresso, water</p>
+          </div>
+          <span class="product-price">P120</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Americano')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Americano')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Espresso" data-product-price="50">
+          <div class="product-details">
+            <span class="product-name">Espresso</span>
+            <p class="product-description"></p>
+          </div>
+          <span class="product-price">P50</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Espresso')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Espresso')">Remove</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="product-section">
+      <h3>Non-Espresso & Refreshers</h3>
+      <ul class="product-list">
+        <li class="product-item" data-product-name="Matcha" data-product-price="130">
+          <div class="product-details">
+            <span class="product-name">Matcha</span>
+            <p class="product-description">matcha, milk</p>
+          </div>
+          <span class="product-price">P130</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Matcha')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Matcha')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Strawberry Latte" data-product-price="130">
+          <div class="product-details">
+            <span class="product-name">Strawberry Latte</span>
+            <p class="product-description">strawberry, milk</p>
+          </div>
+          <span class="product-price">P130</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Strawberry Latte')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Strawberry Latte')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Horchata" data-product-price="130">
+          <div class="product-details">
+            <span class="product-name">Horchata</span>
+            <p class="product-description">horchata, milk, cinnamon topping</p>
+          </div>
+          <span class="product-price">P130</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Horchata')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Horchata')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Dark Chocolate" data-product-price="130">
+          <div class="product-details">
+            <span class="product-name">Dark Chocolate</span>
+            <p class="product-description">dark chocolate, milk</p>
+          </div>
+          <span class="product-price">P130</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Dark Chocolate')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Dark Chocolate')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Peach Berry Fizz" data-product-price="130">
+          <div class="product-details">
+            <span class="product-name">Peach Berry Fizz</span>
+            <p class="product-description">strawberry, peach, carbonated water</p>
+          </div>
+          <span class="product-price">P130</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Peach Berry Fizz')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Peach Berry Fizz')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Kiwi Passion" data-product-price="130">
+          <div class="product-details">
+            <span class="product-name">Kiwi Passion</span>
+            <p class="product-description">kiwi, passion fruit, carbonated water</p>
+          </div>
+          <span class="product-price">P130</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Kiwi Passion')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Kiwi Passion')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Purple Lemonade" data-product-price="130">
+          <div class="product-details">
+            <span class="product-name">Purple Lemonade</span>
+            <p class="product-description">lemon, butterfly pea tea, carbonated water</p>
+          </div>
+          <span class="product-price">P130</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Purple Lemonade')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Purple Lemonade')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Honey Peach Tea" data-product-price="130">
+          <div class="product-details">
+            <span class="product-name">Honey Peach Tea</span>
+            <p class="product-description">lemon, honey, peach, black tea</p>
+          </div>
+          <span class="product-price">P130</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Honey Peach Tea')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Honey Peach Tea')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Earl Grey Tea" data-product-price="130">
+          <div class="product-details">
+            <span class="product-name">Earl Grey Tea</span>
+            <p class="product-description">lemon, honey, earl grey, black tea</p>
+          </div>
+          <span class="product-price">P130</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Earl Grey Tea')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Earl Grey Tea')">Remove</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="product-section">
+      <h3>Add-ons</h3>
+      <ul class="product-list">
+        <li class="product-item" data-product-name="Espresso Shot" data-product-price="30">
+          <div class="product-details">
+            <span class="product-name">Espresso Shot</span>
+          </div>
+          <span class="product-price">P30</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Espresso Shot')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Espresso Shot')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Cold Foam" data-product-price="30">
+          <div class="product-details">
+            <span class="product-name">Cold Foam</span>
+          </div>
+          <span class="product-price">P30</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Cold Foam')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Cold Foam')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Seasalt Foam" data-product-price="30">
+          <div class="product-details">
+            <span class="product-name">Seasalt Foam</span>
+          </div>
+          <span class="product-price">P30</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Seasalt Foam')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Seasalt Foam')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Flavor Syrup" data-product-price="30">
+          <div class="product-details">
+            <span class="product-name">Flavor Syrup</span>
+          </div>
+          <span class="product-price">P30</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Flavor Syrup')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Flavor Syrup')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Oatmilk" data-product-price="60">
+          <div class="product-details">
+            <span class="product-name">Oatmilk</span>
+          </div>
+          <span class="product-price">P60</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Oatmilk')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Oatmilk')">Remove</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="product-section">
+      <h3>Pastries</h3>
+      <ul class="product-list">
+        <li class="product-item" data-product-name="Butter Croissant" data-product-price="130">
+          <div class="product-details">
+            <span class="product-name">Butter Croissant</span>
+            <p class="product-description"></p>
+          </div>
+          <span class="product-price">P130</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Butter Croissant')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Butter Croissant')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Pain au Chocolat" data-product-price="160">
+          <div class="product-details">
+            <span class="product-name">Pain au Chocolat</span>
+            <p class="product-description"></p>
+          </div>
+          <span class="product-price">P160</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Pain au Chocolat')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Pain au Chocolat')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Almond Croissant" data-product-price="175">
+          <div class="product-details">
+            <span class="product-name">Almond Croissant</span>
+            <p class="product-description"></p>
+          </div>
+          <span class="product-price">P175</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Almond Croissant')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Almond Croissant')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Matcha Croissant" data-product-price="180">
+          <div class="product-details">
+            <span class="product-name">Matcha Croissant</span>
+            <p class="product-description"></p>
+          </div>
+          <span class="product-price">P180</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Matcha Croissant')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Matcha Croissant')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Golden Crunch" data-product-price="175">
+          <div class="product-details">
+            <span class="product-name">Golden Crunch</span>
+            <p class="product-description"></p>
+          </div>
+          <span class="product-price">P175</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Golden Crunch')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Golden Crunch')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Pistachio Croissant" data-product-price="180">
+          <div class="product-details">
+            <span class="product-name">Pistachio Croissant</span>
+            <p class="product-description"></p>
+          </div>
+          <span class="product-price">P180</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Pistachio Croissant')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Pistachio Croissant')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Caradamia" data-product-price="190">
+          <div class="product-details">
+            <span class="product-name">Caradamia</span>
+            <p class="product-description"></p>
+          </div>
+          <span class="product-price">P190</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Caradamia')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Caradamia')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Biscoff Croissant" data-product-price="200">
+          <div class="product-details">
+            <span class="product-name">Biscoff Croissant</span>
+            <p class="product-description"></p>
+          </div>
+          <span class="product-price">P200</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Biscoff Croissant')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Biscoff Croissant')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Nutella Croissant" data-product-price="200">
+          <div class="product-details">
+            <span class="product-name">Nutella Croissant</span>
+            <p class="product-description"></p>
+          </div>
+          <span class="product-price">P200</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Nutella Croissant')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Nutella Croissant')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Cookie Croissant" data-product-price="180">
+          <div class="product-details">
+            <span class="product-name">Cookie Croissant</span>
+            <p class="product-description"></p>
+          </div>
+          <span class="product-price">P180</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Cookie Croissant')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Cookie Croissant')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Cheese Pimiento" data-product-price="180">
+          <div class="product-details">
+            <span class="product-name">Cheese Pimiento</span>
+            <p class="product-description"></p>
+          </div>
+          <span class="product-price">P180</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Cheese Pimiento')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Cheese Pimiento')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Ham & Cheese Croissant" data-product-price="150">
+          <div class="product-details">
+            <span class="product-name">Ham & Cheese Croissant</span>
+            <p class="product-description"></p>
+          </div>
+          <span class="product-price">P150</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Ham & Cheese Croissant')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Ham & Cheese Croissant')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Tuna Supreme" data-product-price="160">
+          <div class="product-details">
+            <span class="product-name">Tuna Supreme</span>
+            <p class="product-description"></p>
+          </div>
+          <span class="product-price">P160</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Tuna Supreme')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Tuna Supreme')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Four Cheese Flat Bread" data-product-price="140">
+          <div class="product-details">
+            <span class="product-name">Four Cheese (Flat Bread)</span>
+            <p class="product-description"></p>
+          </div>
+          <span class="product-price">P140</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Four Cheese Flat Bread')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Four Cheese Flat Bread')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Meat Lover's Flat Bread" data-product-price="140">
+          <div class="product-details">
+            <span class="product-name">Meat Lover's (Flat Bread)</span>
+            <p class="product-description"></p>
+          </div>
+          <span class="product-price">P140</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Meat Lover\'s Flat Bread')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Meat Lover\'s Flat Bread')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="NYR Red Velvet" data-product-price="160">
+          <div class="product-details">
+            <span class="product-name">NYR Red Velvet</span>
+            <p class="product-description"></p>
+          </div>
+          <span class="product-price">P160</span>
+          <div class="product-actions">
+            <button onclick="addToCart('NYR Red Velvet')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('NYR Red Velvet')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="NYR Cookies & Cream" data-product-price="160">
+          <div class="product-details">
+            <span class="product-name">NYR Cookies & Cream</span>
+            <p class="product-description"></p>
+          </div>
+          <span class="product-price">P160</span>
+          <div class="product-actions">
+            <button onclick="addToCart('NYR Cookies & Cream')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('NYR Cookies & Cream')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="NYR Choco Almond" data-product-price="160">
+          <div class="product-details">
+            <span class="product-name">NYR Choco Almond</span>
+            <p class="product-description"></p>
+          </div>
+          <span class="product-price">P160</span>
+          <div class="product-actions">
+            <button onclick="addToCart('NYR Choco Almond')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('NYR Choco Almond')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Cinnamon Danish" data-product-price="130">
+          <div class="product-details">
+            <span class="product-name">Cinnamon Danish</span>
+            <p class="product-description"></p>
+          </div>
+          <span class="product-price">P130</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Cinnamon Danish')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Cinnamon Danish')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Ube Danish" data-product-price="140">
+          <div class="product-details">
+            <span class="product-name">Ube Danish</span>
+            <p class="product-description"></p>
+          </div>
+          <span class="product-price">P140</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Ube Danish')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Ube Danish')">Remove</button>
+          </div>
+        </li>
+        <li class="product-item" data-product-name="Silung Croissant" data-product-price="220">
+          <div class="product-details">
+            <span class="product-name">Silung Croissant</span>
+            <p class="product-description"></p>
+          </div>
+          <span class="product-price">P220</span>
+          <div class="product-actions">
+            <button onclick="addToCart('Silung Croissant')">Add to cart</button>
+            <button class="remove-btn" onclick="removeFromCart('Silung Croissant')">Remove</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-socials">
+      <a href="#"><i class="fab fa-facebook-f"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-tiktok"></i></a>
+    </div>
+    <p>&copy; 2024 Silung Coffee. All rights reserved.</p>
+  </footer>
+
+  <div id="message-container"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      const nav = document.querySelector('nav');
+      const burger = document.querySelector('.hamburger');
+      burger.addEventListener('click', () => {
+        const opened = nav.classList.toggle('nav-open');
+        burger.setAttribute('aria-expanded', opened ? 'true' : 'false');
+      });
+
+      // Cart functionality
+      let cart = {};
+      const cartTotalEl = document.getElementById('cart-total');
+
+      function updateCartTotal() {
+          let total = 0;
+          const productItems = document.querySelectorAll('.product-item');
+          productItems.forEach(item => {
+              const productName = item.getAttribute('data-product-name');
+              const price = parseFloat(item.getAttribute('data-product-price'));
+              if (cart[productName] && !isNaN(price)) {
+                  total += price * cart[productName];
+              }
+          });
+          cartTotalEl.textContent = `P${total.toFixed(2)}`;
+      }
+
+      window.addToCart = function(productName) {
+        if (!cart[productName]) {
+            cart[productName] = 0;
+        }
+        cart[productName]++;
+        updateCartTotal();
+        showMessage(`${productName} added to cart!`);
+      };
+
+      window.removeFromCart = function(productName) {
+        if (cart[productName] && cart[productName] > 0) {
+            cart[productName]--;
+            updateCartTotal();
+            showMessage(`${productName} removed from cart. Remaining: ${cart[productName]}`);
+        } else {
+            showMessage(`${productName} is not in the cart.`);
+        }
+      };
+      
+      window.clearCart = function() {
+          cart = {};
+          updateCartTotal();
+          showMessage('Cart has been cleared!');
+      };
+      
+      // Product Search Functionality
+      const searchInput = document.getElementById('search-input');
+      const productItems = document.querySelectorAll('.product-item');
+
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        productItems.forEach(item => {
+          const productName = item.getAttribute('data-product-name').toLowerCase();
+          if (productName.includes(query)) {
+            item.style.display = 'flex';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+
+      // Unique Rating Functionality (for the first 10 items)
+      const ratingIcons = document.querySelectorAll('.rating-system .rating-icon');
+      ratingIcons.forEach(icon => {
+          icon.addEventListener('click', () => {
+              icon.classList.toggle('rated');
+          });
+      });
+
+      // Message Box
+      function showMessage(text) {
+          const container = document.getElementById('message-container');
+          const messageBox = document.createElement('div');
+          messageBox.className = 'message-box';
+          messageBox.textContent = text;
+          container.appendChild(messageBox);
+
+          // Trigger the fade-in effect
+          setTimeout(() => {
+              messageBox.classList.add('show');
+          }, 10);
+
+          // Hide and remove the message after 3 seconds
+          setTimeout(() => {
+              messageBox.classList.remove('show');
+              setTimeout(() => {
+                  messageBox.remove();
+              }, 500); // Wait for the fade-out transition to finish
+          }, 3000);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Silung Coffee - Features</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="hamburger" aria-label="Toggle navigation" aria-expanded="false">&#9776;</div>
+      <a href="index.html">Home</a>
+      <a href="feature.html" class="active">Features</a>
+      <a href="product.html">Menu</a>
+      <a href="contact.html">Contact Us</a>
+      <a href="sign-up.html">Sign Up</a>
+      <div id="user-status"></div>
+    </nav>
+  </header>
+
+  <section class="hero-section" id="hero-features">
+    <div class="hero-content-overlay">
+      <div class="logo-container">
+        <img src="img/logo.jpg" alt="Silung Coffee Logo" class="main-logo">
+      </div>
+      <h1>Our Unique Features</h1>
+      <p>More than just a sip — an experience.</p>
+      <a href="#features" class="btn-primary">Discover More</a>
+    </div>
+  </section>
+
+  <div class="home-image-gallery">
+    <img src="img/coffee.jpeg" alt="Silung Coffee Cup" class="gallery-item">
+    <img src="img/coffee1.jpg" alt="Freshly brewed coffee" class="gallery-item">
+    <img src="img/coffee2.jpg" alt="Cozy coffee shop interior" class="gallery-item">
+  </div>
+
+  <section class="feature-section" id="features">
+    <h2 class="section-title">Why Choose Silung Coffee?</h2>
+    <div class="feature-grid">
+      <div class="feature-item">
+        <div class="icon"><i class="fa-solid fa-seedling"></i></div>
+        <h3>Authentic Local Sourcing</h3>
+        <p>We partner with local farmers in the Cordillera region to bring you single-origin Arabica beans, ensuring every cup supports local communities and offers a taste of the Philippines' rich coffee heritage.</p>
+      </div>
+
+      <div class="feature-item">
+        <div class="icon"><i class="fa-solid fa-palette"></i></div>
+        <h3>A Hub for Art & Culture</h3>
+        <p>Nestled within the Tabnuan Cultural Center, our café doubles as an art gallery. We feature rotating exhibits from local artists, poets, and musicians, creating a space where creativity flourishes and community thrives.</p>
+      </div>
+
+      <div class="feature-item">
+        <div class="icon"><i class="fa-solid fa-mug-hot"></i></div>
+        <h3>Handcrafted Signature Drinks</h3>
+        <p>Our skilled baristas craft a range of unique signature beverages, including our popular Sea-Salt Latte and Pandan Cold Brew. These innovative creations are a fusion of traditional Filipino flavors and modern coffee artistry.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="video-highlights">
+    <h2 class="section-title">Featured Videos</h2>
+    <div class="video-container">
+      <video class="highlight-video" controls loop muted autoplay playsinline>
+        <source src="media/silung.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <video class="highlight-video" controls loop muted autoplay playsinline>
+        <source src="media/silung2.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </section>
+
+
+  <footer>
+    <div class="footer-socials">
+      <a href="#"><i class="fab fa-facebook-f"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-tiktok"></i></a>
+    </div>
+    <p>&copy; 2024 Silung Coffee. All rights reserved.</p>
+  </footer>
+
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      const nav = document.querySelector('nav');
+      const burger = document.querySelector('.hamburger');
+      burger.addEventListener('click', () => {
+        const opened = nav.classList.toggle('nav-open');
+        burger.setAttribute('aria-expanded', opened ? 'true' : 'false');
+      });
+    });
+  </script>
+</body>
+</html>
