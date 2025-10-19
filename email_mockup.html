@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Marketing Mockup</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body class="mockup-page">
+    <header>
+        <nav>
+            <div class="hamburger">☰</div>
+            <a href="index.html">Home</a>
+            <a href="feature.html">Features</a>
+            <a href="product.html">Menu</a>
+            <a href="contact.html">Contact Us</a>
+            <a href="customer_list.html" class="api-link">Customer List</a>
+            <a href="customer_messages.html" class="api-link">Messages</a>
+            <a href="sign-up.html">Sign Up</a>
+            <div id="user-status"></div>
+        </nav>
+    </header>
+
+    <div class="mockup-page">
+        <h1 style="color: #E9CBA7;">Email Marketing Mockup (Visualization)</h1>
+        <p>This shows the design, layout, and content of an email sent after customer contact.</p>
+
+        <div class="email-container">
+            <div class="email-header">
+                <h2>Thank You from Silung Coffee!</h2>
+            </div>
+            <div class="email-body">
+                <h3 style="color: #1E392A;">Hello <span id="customer-name">[Customer Name]</span>,</h3>
+                <p>Thank you for reaching out to us. We received your message and will respond shortly. As a token of appreciation, here is a special offer!</p>
+                <img src="img/featured_coffee.jpg" alt="Featured Coffee" style="width: 100%; max-width: 500px; height: auto; border-radius: 5px; margin-bottom: 20px;">
+                
+                <h3 style="color: #1E392A;">Your Message Summary:</h3>
+                <blockquote style="border-left: 3px solid #E9CBA7; padding-left: 15px; margin: 15px 0; font-style: italic;">
+                    "<span id="customer-message">Your message text here.</span>"
+                </blockquote>
+                
+                <p>Visit us this week to try our *Roasted Almond* signature drink!</p>
+                
+                <a href="product.html" class="email-cta">View Our Menu</a>
+            </div>
+            <div class="email-footer">
+                &copy; 2024 Silung Coffee | <a href="#" style="color: #777;">Unsubscribe</a>
+            </div>
+        </div>
+        
+        <p><a href="contact.html" style="color: #FFDBA4;">← Go back to Contact Us page</a></p>
+    </div>
+
+    <script>
+        // Extract data from URL query parameters
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const name = urlParams.get('name') || 'Valued Customer';
+            const message = urlParams.get('message') || 'We appreciate your interest in Silung Coffee!';
+
+            document.getElementById('customer-name').textContent = decodeURIComponent(name);
+            document.getElementById('customer-message').textContent = decodeURIComponent(message);
+        });
+    </script>
+</body>
+</html>

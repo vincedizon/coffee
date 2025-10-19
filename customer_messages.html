@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Messages - Silung Coffee</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="hamburger">☰</div>
+            <a href="index.html">Home</a>
+            <a href="feature.html">Features</a>
+            <a href="product.html">Menu</a>
+            <a href="contact.html">Contact Us</a>
+            <a href="customer_list.html" class="api-link">Customer List</a>
+            <a href="customer_messages.html" class="active api-link">Messages</a>
+            <a href="sign-up.html">Sign Up</a>
+            <div id="user-status"></div>
+        </nav>
+    </header>
+
+    <div class="data-page">
+        <h1>Customer Messages </h1>
+
+        <div class="data-search-container">
+            <input type="text" id="search-input" placeholder="Search by Name, Email, or Message Content...">
+        </div>
+        
+        <div class="data-table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date Sent</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Message Snippet</th>
+                    </tr>
+                </thead>
+                <tbody id="message-data-body">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+<script>
+    // Mock Message Data (Simulating RESTful API GET /api/messages)
+    const mockMessagesData = [
+        { id: 201, name: "Ben Sison", email: "b.sison@coffee.ph", message: "Your Spanish Latte is the best I've ever had! Keep up the great work.", date: "2024-05-01", status: "Read" },
+        { id: 202, name: "Maria Santos", email: "maria.s@example.com", message: "Are you planning to open a branch in Clark soon? I travel a lot but would love a local Silung.", date: "2024-05-05", status: "New" },
+        { id: 203, name: "Jose Cruz", email: "j.cruz@web.ph", message: "I'm interested in wholesale coffee beans for my small cafe. Who should I talk to?", date: "2024-05-12", status: "New" },
+        { id: 204, name: "Elaine Wong", email: "elaine.wong@mail.com", message: "My order was perfect and delivered so quickly. Thank you!", date: "2024-05-20", status: "Read" },
+        { id: 205, name: "Anna Reyes", email: "anna.r@email.com", message: "The ambience in your Mabalacat store is so cozy and artistic. I spent the whole afternoon there.", date: "2024-05-25", status: "Read" }
+    ];
+
+    // NEW: Function to load all data, including dynamic additions
+    function loadAllMessageData() {
+        // Retrieve messages submitted via the contact form
+        const submittedMessages = JSON.parse(localStorage.getItem('submittedMessagesData')) || [];
+        
+        // Combine the mock data with the dynamically submitted data
+        let combinedData = [...mockMessagesData];
+        submittedMessages.forEach(message => {
+            // Add a status for messages coming from the form
+            message.status = 'New (Form)'; 
+            if (!combinedData.some(m => m.id === message.id)) {
+                combinedData.push(message);
+            }
+        });
+        
+        return combinedData;
+    }
+
+    function renderMessageTable(data) {
+        const tbody = document.getElementById('message-data-body');
+        tbody.innerHTML = ''; 
+
+        data.forEach(message => {
+            const row = tbody.insertRow();
+            // Highlight New messages (optional styling needed in style.css for .new-message)
+            if (message.status.includes('New')) {
+                row.classList.add('new-message');
+            }
+
+            // Truncate long messages for the table view
+            const snippet = message.message.length > 50 ? 
+                            message.message.substring(0, 50) + '...' : 
+                            message.message;
+
+            row.innerHTML = `
+                <td>${message.id}</td>
+                <td>${message.name}</td>
+                <td>${message.email}</td>
+                <td title="${message.message}">${snippet}</td>
+                <td>${message.date}</td>
+                <td><span class="status-indicator status-${message.status.toLowerCase().split('(')[0].trim()}">${message.status}</span></td>
+            `;
+        });
+    }
+
+    // Search functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        // Load combined data on page load
+        const allMessageData = loadAllMessageData();
+        renderMessageTable(allMessageData);
+
+        // Hamburger menu toggle
+        const nav = document.querySelector('nav');
+        const burger = document.querySelector('.hamburger');
+        burger.addEventListener('click', () => {
+            nav.classList.toggle('nav-open');
+        });
+
+        // Search logic now uses the combined data
+        document.getElementById('search-input').addEventListener('keyup', function(e) {
+            const query = e.target.value.toLowerCase();
+            const combinedData = loadAllMessageData(); // Reload data to ensure latest messages are included
+            
+            const filteredData = combinedData.filter(message => 
+                message.name.toLowerCase().includes(query) ||
+                message.email.toLowerCase().includes(query) ||
+                message.message.toLowerCase().includes(query)
+            );
+            renderMessageTable(filteredData);
+        });
+    });
+</script>
+</body>
+</html>

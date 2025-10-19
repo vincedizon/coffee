@@ -11,15 +11,17 @@
 <body>
   <header>
     <nav>
-      <div class="hamburger" aria-label="Toggle navigation" aria-expanded="false">&#9776;</div>
+      <div class="hamburger">☰</div>
       <a href="index.html">Home</a>
-      <a href="feature.html" class="active">Features</a>
+      <a href="feature.html">Features</a>
       <a href="product.html">Menu</a>
       <a href="contact.html">Contact Us</a>
+      <a href="customer_list.html" class="api-link">Customer List</a>
+      <a href="customer_messages.html" class="api-link">Messages</a>
       <a href="sign-up.html">Sign Up</a>
       <div id="user-status"></div>
     </nav>
-  </header>
+</header>
 
   <section class="hero-section" id="hero-features">
     <div class="hero-content-overlay">
@@ -74,27 +76,3 @@
       </video>
     </div>
   </section>
-
-
-  <footer>
-    <div class="footer-socials">
-      <a href="#"><i class="fab fa-facebook-f"></i></a>
-      <a href="#"><i class="fab fa-instagram"></i></a>
-      <a href="#"><i class="fab fa-tiktok"></i></a>
-    </div>
-    <p>&copy; 2024 Silung Coffee. All rights reserved.</p>
-  </footer>
-
-  
-  <script>
-    document.addEventListener('DOMContentLoaded', function(){
-      const nav = document.querySelector('nav');
-      const burger = document.querySelector('.hamburger');
-      burger.addEventListener('click', () => {
-        const opened = nav.classList.toggle('nav-open');
-        burger.setAttribute('aria-expanded', opened ? 'true' : 'false');
-      });
-    });
-  </script>
-</body>
-</html>
