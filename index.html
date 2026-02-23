@@ -4,105 +4,905 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Silung Coffee</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --cream: #F7F4EF;
+      --ink: #1A1814;
+      --espresso: #3B2A1A;
+      --gold: #C8A96E;
+      --muted: #9A9080;
+      --line: rgba(26,24,20,0.12);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom cursor */
+    .cursor {
+      position: fixed;
+      width: 8px; height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 32px; height: 32px;
+      border: 1px solid var(--ink);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: all 0.15s ease;
+      opacity: 0.4;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 28px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s ease, padding 0.4s ease;
+    }
+    nav.scrolled {
+      background: rgba(247,244,239,0.95);
+      backdrop-filter: blur(12px);
+      padding: 18px 60px;
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 400;
+      position: relative;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover { opacity: 1; }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      border: 1px solid var(--ink);
+      padding: 9px 22px;
+      transition: all 0.3s ease;
+    }
+    .nav-cta:hover {
+      background: var(--ink);
+      color: var(--cream);
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('img/coffee.jpeg') center center / cover no-repeat;
+      filter: brightness(0.45);
+      transform: scale(1.03);
+      animation: heroZoom 8s ease forwards;
+    }
+    @keyframes heroZoom { from { transform: scale(1.06); } to { transform: scale(1); } }
+    .hero-bg-fallback {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, #3B2A1A 0%, #1A1814 100%);
+    }
+    .hero-left {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 100px 80px;
+      width: 100%;
+    }
+    .hero-tag {
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.3s forwards;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 7vw, 7.5rem);
+      font-weight: 300;
+      line-height: 1.0;
+      color: #F7F4EF;
+      margin-bottom: 28px;
+      max-width: 800px;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.5s forwards;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .hero-sub {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: rgba(247,244,239,0.6);
+      max-width: 440px;
+      font-weight: 300;
+      margin-bottom: 52px;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.7s forwards;
+    }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.9s forwards;
+    }
+    .btn-primary {
+      background: var(--gold);
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 16px 38px;
+      display: inline-block;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .btn-primary:hover { background: #F7F4EF; }
+    .btn-link {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(247,244,239,0.6);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .btn-link:hover { color: #F7F4EF; }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 80px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(247,244,239,0.45);
+      opacity: 0;
+      animation: fadeIn 1s ease 1.4s forwards;
+    }
+    .scroll-line {
+      width: 40px;
+      height: 1px;
+      background: var(--muted);
+      position: relative;
+      overflow: hidden;
+    }
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: var(--gold);
+      animation: lineSlide 2s ease 1.5s infinite;
+    }
+
+    /* MARQUEE */
+    .marquee-wrap {
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 20px 0;
+      overflow: hidden;
+      background: var(--ink);
+    }
+    .marquee {
+      display: flex;
+      gap: 60px;
+      animation: marquee 20s linear infinite;
+      white-space: nowrap;
+    }
+    .marquee-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.7;
+    }
+    .marquee-dot {
+      width: 4px; height: 4px;
+      background: var(--gold);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ABOUT */
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    .about-left {
+      padding: 120px 80px;
+      border-right: 1px solid var(--line);
+    }
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .section-label::before {
+      content: '';
+      width: 30px; height: 1px;
+      background: var(--gold);
+    }
+    .about-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 4vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.15;
+      margin-bottom: 36px;
+    }
+    .about-heading em { font-style: italic; color: var(--espresso); }
+    .about-text {
+      font-size: 0.95rem;
+      line-height: 1.9;
+      color: var(--muted);
+      font-weight: 300;
+      margin-bottom: 20px;
+    }
+    .about-right {
+      padding: 120px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 60px;
+    }
+  
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 300;
+      color: var(--ink);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .location-block {
+      border-top: 1px solid var(--line);
+      padding-top: 40px;
+    }
+    .location-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .location-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 300;
+      line-height: 1.5;
+      color: var(--ink);
+    }
+
+    /* HOURS */
+    .hours {
+      background: var(--ink);
+      padding: 100px 80px;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 80px;
+      align-items: start;
+    }
+    
+    .hours-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--cream);
+      line-height: 1.2;
+    }
+    .hours-heading em { font-style: italic; color: var(--gold); }
+    .hours-grid {
+      display: grid;
+      gap: 0;
+    }
+    .hours-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 0;
+      border-bottom: 1px solid rgba(247,244,239,0.1);
+    }
+    .hours-day {
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(247,244,239,0.5);
+    }
+    .hours-time {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 300;
+      color: var(--cream);
+    }
+    .hours-time.closed { color: var(--muted); font-size: 0.85rem; font-family: 'DM Sans', sans-serif; letter-spacing: 0.1em; }
+
+    /* MENU PREVIEW */
+    .menu-preview {
+      padding: 120px 80px;
+    }
+    .menu-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 72px;
+    }
+    .menu-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 4vw, 3.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+    }
+    .menu-heading em { font-style: italic; color: var(--espresso); }
+    .menu-items {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+    .menu-card {
+      background: white;
+      padding: 48px 40px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.4s ease;
+    }
+    .menu-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%; height: 3px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+      transform-origin: left;
+    }
+    .menu-card:hover { transform: translateY(-6px); }
+    .menu-card:hover::before { transform: scaleX(1); }
+    .menu-card-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4rem;
+      font-weight: 300;
+      color: rgba(26,24,20,0.06);
+      line-height: 1;
+      margin-bottom: 24px;
+    }
+    .menu-card-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      margin-bottom: 12px;
+      color: var(--ink);
+    }
+    .menu-card-desc {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: var(--muted);
+      font-weight: 300;
+      margin-bottom: 28px;
+    }
+    .menu-card-tag {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* TESTIMONIALS */
+    .testimonials {
+      background: #F0EBE3;
+      padding: 120px 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .test-left { 
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .test-right {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+    .test-card {
+      padding: 40px;
+      background: var(--cream);
+      position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+    .test-card.visible { opacity: 1; transform: translateY(0); }
+    .test-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.6;
+      color: var(--ink);
+      margin-bottom: 20px;
+    }
+    .test-source {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .test-mark {
+      position: absolute;
+      top: 28px; right: 36px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      line-height: 1;
+      color: var(--gold);
+      opacity: 0.3;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--ink);
+      padding: 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--cream);
+      margin-bottom: 16px;
+    }
+    .footer-tagline {
+      font-size: 0.85rem;
+      color: rgba(247,244,239,0.4);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+    .footer-col-title {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+    }
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .footer-links a {
+      font-size: 0.85rem;
+      color: rgba(247,244,239,0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+      font-weight: 300;
+    }
+    .footer-links a:hover { color: var(--cream); }
+    .footer-bottom {
+      grid-column: 1/-1;
+      border-top: 1px solid rgba(247,244,239,0.08);
+      padding-top: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-copy {
+      font-size: 0.75rem;
+      color: rgba(247,244,239,0.3);
+      letter-spacing: 0.05em;
+    }
+    .footer-ig {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      color: rgba(247,244,239,0.4);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-ig:hover { color: var(--gold); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    @keyframes lineSlide {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.15s; }
+    .reveal-delay-2 { transition-delay: 0.3s; }
+    .reveal-delay-3 { transition-delay: 0.45s; }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      nav { padding: 20px 24px; }
+      nav.scrolled { padding: 14px 24px; }
+      .nav-links { display: none; }
+      .hero-left { padding: 140px 24px 80px; }
+      .about { grid-template-columns: 1fr; }
+      .about-left, .about-right { padding: 80px 24px; }
+      .about-left { border-right: none; border-bottom: 1px solid var(--line); }
+      .hours { grid-template-columns: 1fr; padding: 80px 24px; gap: 40px; }
+      .menu-preview { padding: 80px 24px; }
+      .menu-items { grid-template-columns: 1fr; }
+      .testimonials { grid-template-columns: 1fr; padding: 80px 24px; }
+      footer { grid-template-columns: 1fr; padding: 60px 24px; }
+      .scroll-hint { left: 24px; }
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <nav>
-      <div class="hamburger">☰</div>
-      <a href="index.html">Home</a>
-      <a href="feature.html">Features</a>
-      <a href="product.html">Menu</a>
-      <a href="contact.html">Contact Us</a>
-      <a href="customer_list.html" class="api-link">Customer List</a>
-      <a href="customer_messages.html" class="api-link">Messages</a>
-      <a href="sign-up.html">Sign Up</a>
-      <div id="user-status"></div>
-    </nav>
-</header>
 
-  <!-- Hero Section -->
-  <div class="hero-section" id="home">
-    <div class="hero-content-overlay">
-      <div class="logo-container">
-        <img src="img/logo.jpg" alt="Silung Coffee Logo" class="main-logo">
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="index.html" class="nav-logo">Silung Coffee</a>
+    <ul class="nav-links">
+      <li><a href="feature.html">Features</a></li>
+      <li><a href="product.html">Menu</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="sign-up.html" class="nav-cta">Sign Up</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg-fallback"></div>
+    <div class="hero-bg"></div>
+    <!-- gradient overlay for readability -->
+    <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(to top, rgba(26,24,20,0.85) 0%, rgba(26,24,20,0.2) 50%, rgba(26,24,20,0.1) 100%);"></div>
+    <div class="hero-left">
+      <p class="hero-tag">Est. Mabalacat City · Pampanga</p>
+      <h1 class="hero-title">Where every<br/><em>sip</em> tells<br/>a story.</h1>
+      <p class="hero-sub">A vibrant space that blends heritage, community, and creativity inside the historic Tabnuan Cultural Center.</p>
+      <div class="hero-actions">
+        <a href="product.html" class="btn-primary">View Menu</a>
+        <a href="contact.html" class="btn-link">Find Us ↗</a>
       </div>
-      <h1>SILUNG COFFEE</h1>
-      <p>Where every sip tells a story.</p>
-    </div>
-  </div>
-
-  <!-- About Section -->
-  <section class="about-section" id="about">
-    <h2>About Us</h2>
-    <p>Silung Coffee is more than just a café; it's a vibrant space that blends heritage, community, and creativity.</p>
-    <p>Located inside the <strong>Tabnuan Cultural Center</strong> along MacArthur Highway in Poblacion, our café brings you a nostalgic yet modern atmosphere perfect for quiet afternoons or lively weekend hangouts.</p>
-    <p>Whether you're looking to enjoy a sea-salt latte, discover local art, or simply unwind in a historic setting, Silung Coffee is worth a visit.</p>
-  </section>
-
-  <!-- Divider -->
-  <div class="section-divider">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 150" preserveAspectRatio="none">
-      <path fill="#2F3D2D" d="M0,96L1440,0L1440,320L0,320Z"></path>
-    </svg>
-  </div>
-
-  <!-- Menu Section -->
-  <section class="menu-section" id="menu">
-    <h3>Featured Menu</h3>
-    <div class="menu-images">
-      <img src="img/menu.jpg" alt="Drinks Menu">
-      <img src="img/menu2.jpg" alt="Pastry Menu">
+      <div class="scroll-hint">
+        <div class="scroll-line"></div>
+        Scroll
+      </div>
     </div>
   </section>
 
-  <!-- Divider -->
-  <div class="section-divider">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 150" preserveAspectRatio="none">
-      <path fill="#1E392A" d="M0,96L1440,0L1440,320L0,320Z"></path>
-    </svg>
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee" id="marquee">
+      <span class="marquee-item"><span class="marquee-dot"></span>Sea-Salt Latte</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Tabnuan Cultural Center</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Artisanal Pastries</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Heritage & Community</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Local Art</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Mabalacat City</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Open Tue–Sun</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Sea-Salt Latte</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Tabnuan Cultural Center</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Artisanal Pastries</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Heritage & Community</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Local Art</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Mabalacat City</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Open Tue–Sun</span>
+    </div>
   </div>
 
-  <!-- Testimonials Section -->
+  <!-- ABOUT -->
+  <section class="about">
+    <div class="about-left">
+      <div class="section-label reveal">About Us</div>
+      <h2 class="about-heading reveal reveal-delay-1">More than<br/>just a <em>café</em></h2>
+      <p class="about-text reveal reveal-delay-2">Silung Coffee is a vibrant space that blends heritage, community, and creativity. Located inside the Tabnuan Cultural Center along MacArthur Highway in Poblacion, our café brings you a nostalgic yet modern atmosphere.</p>
+      <p class="about-text reveal reveal-delay-3">Whether you're looking to enjoy a sea-salt latte, discover local art, or simply unwind in a historic setting, Silung Coffee is worth a visit.</p>
+    </div>
+    <div class="about-right">
+      <div class="stat-grid">
+        <div class="stat-item reveal">
+          <div class="stat-num">6</div>
+          <div class="stat-label">Days Open</div>
+        </div>
+        <div class="stat-item reveal reveal-delay-1">
+          <div class="stat-num">8h</div>
+          <div class="stat-label">Daily Hours</div>
+        </div>
+        <div class="stat-item reveal reveal-delay-2">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Good Vibes</div>
+        </div>
+        <div class="stat-item reveal reveal-delay-3">
+          <div class="stat-num">1</div>
+          <div class="stat-label">Unique Location</div>
+        </div>
+      </div>
+      <div class="location-block reveal">
+        <div class="location-label">Our Location</div>
+        <div class="location-text">Tabnuan Cultural Center<br/>MacArthur Hwy, Poblacion<br/>Mabalacat City, Pampanga</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU PREVIEW -->
+  <section class="menu-preview">
+    <div class="menu-header">
+      <div>
+        <div class="section-label reveal">Featured Drinks</div>
+        <h2 class="menu-heading reveal reveal-delay-1">Our <em>signature</em><br/>selections</h2>
+      </div>
+      <a href="product.html" class="btn-link reveal">Full Menu ↗</a>
+    </div>
+    <div class="menu-items">
+      <div class="menu-card reveal">
+        <div class="menu-card-num">01</div>
+        <div class="menu-card-name">Sea-Salt Latte</div>
+        <div class="menu-card-desc">Our signature blend of espresso and silky steamed milk, finished with a delicate sea-salt foam.</div>
+        <div class="menu-card-tag">Signature</div>
+      </div>
+      <div class="menu-card reveal reveal-delay-1">
+        <div class="menu-card-num">02</div>
+        <div class="menu-card-name">Cold Brew</div>
+        <div class="menu-card-desc">Slow-steeped for 18 hours, smooth and bold. The perfect companion for a warm Pampanga afternoon.</div>
+        <div class="menu-card-tag">All-day</div>
+      </div>
+      <div class="menu-card reveal reveal-delay-2">
+        <div class="menu-card-num">03</div>
+        <div class="menu-card-name">Artisan Pastries</div>
+        <div class="menu-card-desc">Freshly baked pastries made to pair with every cup. Ask your barista for today's selection.</div>
+        <div class="menu-card-tag">Daily Fresh</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOURS -->
+  <section class="hours">
+    <div class="hours-left">
+      <div class="section-label" style="color:rgba(200,169,110,0.8); margin-bottom:24px;">
+        <span style="display:flex;align-items:center;gap:16px;"><span style="width:30px;height:1px;background:var(--gold);display:inline-block;"></span>Hours</span>
+      </div>
+      <h2 class="hours-heading reveal">Visit<br/><em>Us</em></h2>
+    </div>
+    <div class="hours-grid reveal">
+      <div class="hours-row">
+        <span class="hours-day">Tuesday – Saturday</span>
+        <span class="hours-time">3:00 PM – 11:00 PM</span>
+      </div>
+      <div class="hours-row">
+        <span class="hours-day">Sunday</span>
+        <span class="hours-time">3:00 PM – 10:00 PM</span>
+      </div>
+      <div class="hours-row">
+        <span class="hours-day">Monday</span>
+        <span class="hours-time closed">Closed</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
   <section class="testimonials">
-    <h3>What Our Customers Say</h3>
-    <blockquote>“The best coffee experience in Mabalacat. Cozy vibes, great pastries!”</blockquote>
-    <blockquote>“Silung Coffee is the perfect mix of art, culture, and amazing drinks.”</blockquote>
+    <div class="test-left">
+      <div class="section-label reveal">What People Say</div>
+      <h2 class="about-heading reveal reveal-delay-1">Loved by our <em>community</em></h2>
+    </div>
+    <div class="test-right">
+      <div class="test-card reveal">
+        <div class="test-mark">"</div>
+        <p class="test-quote">The best coffee experience in Mabalacat. Cozy vibes, great pastries!</p>
+        <div class="test-source">A Happy Customer</div>
+      </div>
+      <div class="test-card reveal reveal-delay-1">
+        <div class="test-mark">"</div>
+        <p class="test-quote">Silung Coffee is the perfect mix of art, culture, and amazing drinks.</p>
+        <div class="test-source">A Regular Visitor</div>
+      </div>
+    </div>
   </section>
 
-  <!-- Divider -->
-  <div class="section-divider">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 150" preserveAspectRatio="none">
-      <path fill="#2F3D2D" d="M0,96L1440,0L1440,320L0,320Z"></path>
-    </svg>
-  </div>
-
-  <!-- Hours Section -->
-  <section class="hours-section" id="hours">
-    <h3>Operating Hours</h3>
-    <p><strong>Tuesday to Saturday:</strong> 3:00 PM - 11:00 PM</p>
-    <p><strong>Sunday:</strong> 3:00 PM - 10:00 PM</p>
-    <p><strong>Monday:</strong> Closed</p>
-  </section>
-
-  <!-- Divider -->
-  <div class="section-divider">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 150" preserveAspectRatio="none">
-      <path fill="#1E392A" d="M0,96L1440,0L1440,320L0,320Z"></path>
-    </svg>
-  </div>
-
-  <!-- Contact Section -->
-  <section class="contact-section" id="contact">
-    <h3>Contact Us</h3>
-    <p><strong>Instagram:</strong> @silung.coffee</p>
-    <p><strong>Address:</strong> Tabnuan Cultural Center, MacArthur Highway, Poblacion, Mabalacat City, Pampanga</p>
-  </section>
-
+  <!-- FOOTER -->
   <footer>
-    <p>&copy; 2024 Silung Coffee. All rights reserved.</p>
+    <div class="footer-brand">
+      <div class="footer-logo">Silung Coffee</div>
+      <p class="footer-tagline">Where every sip tells a story.<br/>Tabnuan Cultural Center<br/>Mabalacat City, Pampanga</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Navigate</div>
+      <ul class="footer-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="feature.html">Features</a></li>
+        <li><a href="product.html">Menu</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="sign-up.html">Sign Up</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Connect</div>
+      <ul class="footer-links">
+        <li><a href="#">@silung.coffee</a></li>
+        <li><a href="customer_messages.html">Messages</a></li>
+        <li><a href="customer_list.html">Customer List</a></li>
+      </ul>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2024 Silung Coffee. All rights reserved.</span>
+      <a href="#" class="footer-ig">@silung.coffee ↗</a>
+    </div>
   </footer>
+
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px';
+      cursor.style.top = my + 'px';
+    });
+
+    function animateRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.transform = 'translate(-50%, -50%) scale(2)';
+        ring.style.transform = 'translate(-50%, -50%) scale(1.5)';
+        ring.style.opacity = '0.8';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+        ring.style.transform = 'translate(-50%, -50%) scale(1)';
+        ring.style.opacity = '0.4';
+      });
+    });
+
+    // Scroll nav
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Testimonial observer
+    document.querySelectorAll('.test-card').forEach((card, i) => {
+      card.style.transitionDelay = (i * 0.15) + 's';
+      observer.observe(card);
+    });
+  </script>
 </body>
 </html>

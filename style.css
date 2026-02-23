@@ -65,7 +65,7 @@ nav.scrolled {
   font-size: 0.75rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--ink);
+  color: bisque;
   text-decoration: none;
   font-weight: 400;
   position: relative;
@@ -232,7 +232,6 @@ nav.scrolled {
   font-weight: 300;
   outline: none;
   transition: border-color 0.3s ease;
-  -webkit-appearance: none;
   border-radius: 0;
 }
 .form-field input:focus,
