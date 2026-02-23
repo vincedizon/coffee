@@ -1,51 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>Silung Coffee - Contact Us</title>
-  <link href="style.css" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
-  <script crossorigin="anonymous" src="https://kit.fontawesome.com/a076d05399.js"></script>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact — Silung Coffee</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <header>
-    <nav>
-      <div class="hamburger">☰</div>
-      <a href="index.html">Home</a>
-      <a href="feature.html">Features</a>
-      <a href="product.html">Menu</a>
-      <a href="contact.html" class="active">Contact Us</a>
-      <a href="customer_list.html" class="api-link">Customer List</a>
-      <a href="customer_messages.html" class="api-link">Messages</a>
-      <a href="sign-up.html">Sign Up</a>
-      <div id="user-status"></div>
-    </nav>
-  </header>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
-  <section class="hero-section" id="hero-features">
-    <div class="hero-content-overlay">
-      <h1 class="page-title">CONTACT US</h1>
-    </div>
-  </section>
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Silung Coffee</a>
+  <button class="hamburger" id="burger">☰</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="feature.html">Features</a></li>
+    <li><a href="product.html">Menu</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+    <li><a href="customer_list.html">Customers</a></li>
+    <li><a href="customer_messages.html">Messages</a></li>
+  </ul>
+  <a href="sign-up.html" class="nav-cta">Sign Up</a>
+</nav>
 
-  <div class="contact-container">
-    <div class="contact-wrapper">
-      
-      <form class="contact-form" id="contactForm" novalidate="True">
-    
-        <div class="form-group-contact">
-          <label for="name">Name*</label>
-          <input type="text" id="name" name="name" required placeholder="Your Full Name">
+<div class="page-hero">
+  <p class="page-hero-label">Get In Touch</p>
+  <h1>Contact <em>Us</em></h1>
+  <p>We'd love to hear from you.</p>
+</div>
+
+<div class="marquee-wrap">
+  <div class="marquee">
+    <span class="marquee-item"><span class="marquee-dot"></span>General Inquiries</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Customer Feedback</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Email Marketing</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>@silung.coffee</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Mabalacat City</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>General Inquiries</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Customer Feedback</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Email Marketing</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>@silung.coffee</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Mabalacat City</span>
+  </div>
+</div>
+
+<section class="contact-body">
+  <div class="contact-grid">
+    <div class="contact-form-wrap reveal">
+      <div class="section-label">Send a Message</div>
+      <form id="contactForm" novalidate>
+        <div class="form-field">
+          <label for="name">Full Name *</label>
+          <input type="text" id="name" name="name" required placeholder="Your name">
         </div>
-        
-        <div class="form-group-contact">
-          <label for="email">Email*</label>
+        <div class="form-field">
+          <label for="email">Email Address *</label>
           <input type="email" id="email" name="email" required placeholder="example@mail.com">
         </div>
-        
-        <div class="form-group-contact">
-          <label for="marketingType">Select Topic</label>
+        <div class="form-field">
+          <label for="marketingType">Topic</label>
           <select id="marketingType" name="marketingType">
             <option value="General Inquiry">General Inquiry</option>
             <option value="Customer Feedback">Customer Feedback</option>
@@ -53,126 +67,106 @@
             <option value="Social Media Marketing">Social Media Marketing</option>
           </select>
         </div>
-        
-        <div class="form-group-contact">
-          <label for="message">Message*</label>
-          <textarea id="message" name="message" rows="4" required placeholder="Your message..."></textarea>
+        <div class="form-field">
+          <label for="message">Message *</label>
+          <textarea id="message" name="message" rows="5" required placeholder="Your message..."></textarea>
         </div>
-
-        <div class="form-group-contact">
-          <button type="submit">Send Message</button>
-        </div>
+        <button type="submit" class="btn-primary">Send Message</button>
       </form>
+    </div>
 
-      <aside class="contact-info">
-        <section class="location-details">
-          <h3>Our Location</h3>
-          <p>Silung Coffee</p>
-          <p>MacArthur Hwy, Mabalacat City, Pampanga</p>
-        </section>
-
-        <div aria-label="Social links" class="socials">
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-tiktok"></i></a>
-        </div>
-
-        <iframe 
-          class="map-embed"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3849.7725750328505!2d120.57321379999999!3d15.2256073!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3396ed004be7b937%3A0xc35f27c9da38e589!2sSilung%20Coffee!5e0!3m2!1sen!2sph!4v1760877427893!5m2!1sen!2sph" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+    <aside class="contact-aside reveal reveal-delay-1">
+      <div class="aside-block">
+        <div class="section-label">Location</div>
+        <p class="aside-serif">Tabnuan Cultural Center<br/>MacArthur Hwy, Poblacion<br/>Mabalacat City, Pampanga</p>
+      </div>
+      <div class="aside-block">
+        <div class="section-label">Hours</div>
+        <p class="aside-small">Tue–Sat &nbsp;· &nbsp;3:00 PM – 11:00 PM</p>
+        <p class="aside-small">Sunday &nbsp;· &nbsp;3:00 PM – 10:00 PM</p>
+        <p class="aside-small muted">Monday &nbsp;· &nbsp;Closed</p>
+      </div>
+      <div class="aside-block">
+        <div class="section-label">Social</div>
+        <a href="#" class="aside-link">@silung.coffee ↗</a>
+      </div>
+      <div class="map-wrap">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3849.7725750328505!2d120.57321379999999!3d15.2256073!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3396ed004be7b937%3A0xc35f27c9da38e589!2sSilung%20Coffee!5e0!3m2!1sen!2sph!4v1760877427893!5m2!1sen!2sph"
+          width="100%" height="260" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
         </iframe>
-      </aside>
-    </div>
+      </div>
+    </aside>
   </div>
+</section>
 
-  <div id="message-container"></div>
-  
-  <footer>
-    <div class="footer-socials">
-      <a href="#"><i class="fab fa-facebook-f"></i></a>
-      <a href="#"><i class="fab fa-instagram"></i></a>
-      <a href="#"><i class="fab fa-tiktok"></i></a>
-    </div>
-    <p>&copy; 2024 Silung Coffee. All rights reserved.</p>
-  </footer>
+<div id="message-container"></div>
 
-  <script>
-    /**
-     * Notification/Message Function (For "data received" status)
-     * This uses the standard floating notification style in your style.css
-     */
-    function showStandardMessage(text, type = 'success') {
-        const container = document.getElementById('message-container');
-        let messageBox = document.createElement('div');
-        messageBox.className = `message-box ${type}`;
-        messageBox.textContent = text;
-        container.appendChild(messageBox);
+<footer>
+  <div>
+    <div class="footer-logo">Silung Coffee</div>
+    <p class="footer-tagline">Where every sip tells a story.<br/>Tabnuan Cultural Center<br/>Mabalacat City, Pampanga</p>
+  </div>
+  <div>
+    <div class="footer-col-title">Navigate</div>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="feature.html">Features</a></li>
+      <li><a href="product.html">Menu</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="sign-up.html">Sign Up</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="footer-col-title">Connect</div>
+    <ul class="footer-links">
+      <li><a href="#">@silung.coffee</a></li>
+      <li><a href="customer_messages.html">Messages</a></li>
+      <li><a href="customer_list.html">Customer List</a></li>
+    </ul>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2024 Silung Coffee. All rights reserved.</span>
+    <a href="#" class="footer-ig">@silung.coffee ↗</a>
+  </div>
+</footer>
 
-        // Trigger the fade-in effect (relies on CSS transition)
-        setTimeout(() => {
-            messageBox.classList.add('show');
-        }, 10);
+<style>
+  body { cursor: none; }
+  .contact-body { padding: 100px 80px; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: start; }
+  .aside-block { margin-bottom: 44px; }
+  .aside-serif { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 300; line-height: 1.6; color: var(--ink); margin-top: 4px; }
+  .aside-small { font-size: 0.9rem; font-weight: 300; color: var(--ink); line-height: 2; }
+  .aside-small.muted { color: var(--muted); }
+  .aside-link { font-size: 0.85rem; letter-spacing: 0.1em; color: var(--gold); text-decoration: none; transition: opacity 0.2s; }
+  .aside-link:hover { opacity: 0.7; }
+  .map-wrap { margin-top: 8px; border: 1px solid var(--line); overflow: hidden; }
+  @media (max-width: 900px) {
+    .contact-body { padding: 60px 24px; }
+    .contact-grid { grid-template-columns: 1fr; gap: 60px; }
+  }
+</style>
 
-        // Hide and remove the message after 3 seconds
-        setTimeout(() => {
-            messageBox.classList.remove('show');
-            setTimeout(() => {
-                messageBox.remove();
-            }, 500); // Wait for the fade-out transition to finish
-        }, 3000);
+<script src="shared.js"></script>
+<script>
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const f = this;
+    if (!f.name.value || !f.email.value || !f.message.value) {
+      showMsg('Please fill in all required fields.', 'error'); return;
     }
-    
-    document.addEventListener('DOMContentLoaded', function () {
-        const form = document.getElementById('contactForm');
-        const nav = document.querySelector('nav');
-        const burger = document.querySelector('.hamburger');
-
-        // Hamburger menu toggle
-        burger.addEventListener('click', () => {
-            nav.classList.toggle('nav-open');
-        });
-
-        // Form Submission with localStorage for Customer Messages
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            // Simple validation check for required fields (Name, Email, Message)
-            if (!form.name.value || !form.email.value || !form.message.value) {
-                showStandardMessage('Please fill in all required fields.', 'error');
-                return;
-            }
-
-            const messageData = {
-                id: Date.now(), // Unique ID based on timestamp
-                name: form.name.value,
-                email: form.email.value,
-                message: form.message.value,
-                date: new Date().toISOString().slice(0, 10),
-                status: 'New'
-            };
-
-            // 1. Save the new message to localStorage
-            let submittedMessages = JSON.parse(localStorage.getItem('submittedMessagesData')) || [];
-            submittedMessages.push(messageData);
-            localStorage.setItem('submittedMessagesData', JSON.stringify(submittedMessages));
-
-            // 2. Display success message to the user ("data received" notification)
-            const marketingType = form.marketingType.value;
-            const successText = `Thank you, ${form.name.value}! Your message has been received and logged in our system.`;
-            showStandardMessage(successText, 'success');
-
-            // 3. Simulate redirection for marketing inquiries
-            if (marketingType === 'Email Marketing' || marketingType === 'Social Media Marketing') {
-                setTimeout(() => {
-                    // Navigate to the correct mockup page
-                    window.location.href = (marketingType === 'Email Marketing' ? 'customer_list.html' : 'customer_messages.html');
-                }, 1500); // Wait for message to show before redirecting
-            }
-
-            // 4. Reset the form
-            form.reset();
-        });
-    });
+    const data = { id: Date.now(), name: f.name.value, email: f.email.value, message: f.message.value, date: new Date().toISOString().slice(0,10), status: 'New' };
+    let msgs = JSON.parse(localStorage.getItem('submittedMessagesData')) || [];
+    msgs.push(data);
+    localStorage.setItem('submittedMessagesData', JSON.stringify(msgs));
+    showMsg(`Thank you, ${f.name.value}! Your message has been received.`, 'success');
+    const type = f.marketingType.value;
+    if (type === 'Email Marketing' || type === 'Social Media Marketing') {
+      setTimeout(() => { window.location.href = type === 'Email Marketing' ? 'customer_list.html' : 'customer_messages.html'; }, 1500);
+    }
+    f.reset();
+  });
 </script>
 </body>
 </html>

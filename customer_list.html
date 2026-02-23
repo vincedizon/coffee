@@ -1,121 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer List - Silung Coffee</title>
-    <link rel="stylesheet" href="style.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Customer List — Silung Coffee</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    body { cursor: none; }
+    .data-body { padding: 80px; }
+    .data-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 48px; flex-wrap: wrap; gap: 24px; }
+    .data-heading { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 300; }
+    .data-heading em { font-style: italic; color: var(--gold); }
+    .search-wrap { position: relative; }
+    .search-wrap input { padding: 12px 20px 12px 44px; background: var(--white); border: 1px solid var(--line); font-family: 'DM Sans', sans-serif; font-size: 0.88rem; outline: none; transition: border-color 0.3s; min-width: 280px; border-radius: 0; }
+    .search-wrap input:focus { border-color: var(--gold); }
+    .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); }
+    .data-stats { display: flex; gap: 48px; margin-bottom: 48px; padding-bottom: 40px; border-bottom: 1px solid var(--line); }
+    .stat { }
+    .stat-n { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 300; line-height: 1; }
+    .stat-l { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+    @media (max-width: 900px) { .data-body { padding: 60px 24px; } .data-header { flex-direction: column; align-items: flex-start; } .search-wrap input { min-width: 100%; width: 100%; } }
+  </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="hamburger">☰</div>
-            <a href="index.html">Home</a>
-            <a href="feature.html">Features</a>
-            <a href="product.html">Menu</a>
-            <a href="contact.html">Contact Us</a>
-            <a href="customer_list.html" class="active api-link">Customer List</a>
-            <a href="customer_messages.html" class="api-link">Messages</a>
-            <a href="sign-up.html">Sign Up</a>
-            <div id="user-status"></div>
-        </nav>
-    </header>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
-    <div class="data-page">
-        <h1>Customer List</h1>
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Silung Coffee</a>
+  <button class="hamburger" id="burger">☰</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="feature.html">Features</a></li>
+    <li><a href="product.html">Menu</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="customer_list.html" class="active">Customers</a></li>
+    <li><a href="customer_messages.html">Messages</a></li>
+  </ul>
+  <a href="sign-up.html" class="nav-cta">Sign Up</a>
+</nav>
 
-        <div class="data-search-container">
-            <input type="text" id="search-input" placeholder="Search by Name, Email, or City...">
-        </div>
-        
-        <div class="data-table-container">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>City</th>
-                        <th>Sign Up Date</th>
-                    </tr>
-                </thead>
-                <tbody id="customer-data-body">
-                    </tbody>
-            </table>
-        </div>
+<div class="page-hero">
+  <p class="page-hero-label">Admin</p>
+  <h1>Customer <em>List</em></h1>
+  <p>Registered and active customers.</p>
+</div>
+
+<div class="data-body">
+  <div class="data-header reveal">
+    <div>
+      <h2 class="data-heading">All <em>Customers</em></h2>
     </div>
+    <div class="search-wrap">
+      <span class="search-icon">⌕</span>
+      <input type="text" id="search-input" placeholder="Search name, email, city...">
+    </div>
+  </div>
 
-   <script>
-    // Mock Customer Data (Simulating RESTful API GET /api/customers)
-    const mockCustomerData = [
-        { id: 101, name: "Maria Santos", email: "maria.s@example.com", city: "Mabalacat", signupDate: "2024-01-15" },
-        { id: 102, name: "Jose Cruz", email: "j.cruz@web.ph", city: "Angeles City", signupDate: "2024-02-20" },
-        { id: 103, name: "Elaine Wong", email: "elaine.wong@mail.com", city: "Clark Freeport", signupDate: "2024-03-10" },
-        { id: 104, name: "Ben Sison", email: "b.sison@coffee.ph", city: "Mabalacat", signupDate: "2024-04-05" },
-        { id: 105, name: "Anna Reyes", email: "anna.r@email.com", city: "San Fernando", signupDate: "2024-05-18" }
-    ];
+  <div class="data-stats reveal reveal-delay-1">
+    <div class="stat">
+      <div class="stat-n" id="total-count">—</div>
+      <div class="stat-l">Total Customers</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n" id="new-count">—</div>
+      <div class="stat-l">New This Month</div>
+    </div>
+  </div>
 
-    // NEW: Function to load all data, including dynamic additions
-    function loadAllCustomerData() {
-        // Retrieve customers submitted via the checkout in product.html
-        const submittedCustomers = JSON.parse(localStorage.getItem('submittedCustomers')) || [];
-        
-        // Combine the mock data with the dynamically submitted data
-        // Use a Set to ensure no immediate duplicates (useful if we refresh the data)
-        let combinedData = [...mockCustomerData];
-        submittedCustomers.forEach(customer => {
-             // Check if the submitted customer's ID is already in the mock data (unlikely, but safe)
-            if (!combinedData.some(c => c.id === customer.id)) {
-                combinedData.push(customer);
-            }
-        });
+  <div class="data-table-wrap reveal reveal-delay-2">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>City</th>
+          <th>Sign Up Date</th>
+        </tr>
+      </thead>
+      <tbody id="customer-data-body"></tbody>
+    </table>
+  </div>
+</div>
 
-        return combinedData;
-    }
+<footer>
+  <div>
+    <div class="footer-logo">Silung Coffee</div>
+    <p class="footer-tagline">Where every sip tells a story.<br/>Tabnuan Cultural Center<br/>Mabalacat City, Pampanga</p>
+  </div>
+  <div>
+    <div class="footer-col-title">Navigate</div>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="feature.html">Features</a></li>
+      <li><a href="product.html">Menu</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="footer-col-title">Admin</div>
+    <ul class="footer-links">
+      <li><a href="customer_list.html">Customer List</a></li>
+      <li><a href="customer_messages.html">Messages</a></li>
+      <li><a href="sign-up.html">Sign Up</a></li>
+    </ul>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2024 Silung Coffee. All rights reserved.</span>
+    <a href="#" class="footer-ig">@silung.coffee ↗</a>
+  </div>
+</footer>
 
-    function renderCustomerTable(data) {
-        const tbody = document.getElementById('customer-data-body');
-        tbody.innerHTML = ''; 
+<script src="shared.js"></script>
+<script>
+const mockCustomerData = [
+  { id: 101, name: "Maria Santos", email: "maria.s@example.com", city: "Mabalacat", signupDate: "2024-01-15" },
+  { id: 102, name: "Jose Cruz", email: "j.cruz@web.ph", city: "Angeles City", signupDate: "2024-02-20" },
+  { id: 103, name: "Elaine Wong", email: "elaine.wong@mail.com", city: "Clark Freeport", signupDate: "2024-03-10" },
+  { id: 104, name: "Ben Sison", email: "b.sison@coffee.ph", city: "Mabalacat", signupDate: "2024-04-05" },
+  { id: 105, name: "Anna Reyes", email: "anna.r@email.com", city: "San Fernando", signupDate: "2024-05-18" }
+];
 
-        data.forEach(customer => {
-            const row = tbody.insertRow();
-            row.innerHTML = `
-                <td>${customer.id}</td>
-                <td>${customer.name}</td>
-                <td>${customer.email}</td>
-                <td>${customer.city}</td>
-                <td>${customer.signupDate}</td>
-            `;
-        });
-    }
-    
-    // Search functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        // Load combined data
-        const allCustomerData = loadAllCustomerData();
-        renderCustomerTable(allCustomerData);
+function loadAll() {
+  const extra = JSON.parse(localStorage.getItem('submittedCustomers')) || [];
+  const all = [...mockCustomerData];
+  extra.forEach(c => { if (!all.some(x => x.id === c.id)) all.push(c); });
+  return all;
+}
 
-        // Hamburger menu toggle (if not already included in the body)
-        const nav = document.querySelector('nav');
-        const burger = document.querySelector('.hamburger');
-        burger.addEventListener('click', () => {
-            nav.classList.toggle('nav-open');
-        });
+function render(data) {
+  const tbody = document.getElementById('customer-data-body');
+  tbody.innerHTML = data.length ? data.map(c => `<tr>
+    <td style="color:var(--muted);font-size:0.8rem">#${c.id}</td>
+    <td><strong style="font-weight:500">${c.name}</strong></td>
+    <td style="color:var(--muted)">${c.email}</td>
+    <td>${c.city}</td>
+    <td style="color:var(--muted)">${c.signupDate}</td>
+  </tr>`).join('') : '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:40px">No customers found.</td></tr>';
+}
 
-        // Search logic now uses the combined data
-        document.getElementById('search-input').addEventListener('keyup', function(e) {
-            const query = e.target.value.toLowerCase();
-            const combinedData = loadAllCustomerData(); // Reload all data to search the latest list
-            
-            const filteredData = combinedData.filter(customer => 
-                customer.name.toLowerCase().includes(query) ||
-                customer.email.toLowerCase().includes(query) ||
-                customer.city.toLowerCase().includes(query)
-            );
-            renderCustomerTable(filteredData);
-        });
-    });
+const all = loadAll();
+render(all);
+document.getElementById('total-count').textContent = all.length;
+const thisMonth = new Date().toISOString().slice(0,7);
+document.getElementById('new-count').textContent = all.filter(c => c.signupDate && c.signupDate.startsWith(thisMonth)).length;
+
+document.getElementById('search-input').addEventListener('keyup', function() {
+  const q = this.value.toLowerCase();
+  const data = loadAll();
+  render(q ? data.filter(c => c.name.toLowerCase().includes(q) || c.email.toLowerCase().includes(q) || c.city.toLowerCase().includes(q)) : data);
+});
 </script>
 </body>
 </html>

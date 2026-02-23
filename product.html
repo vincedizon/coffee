@@ -1,239 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Silung Coffee - Menu</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Menu — Silung Coffee</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    body { cursor: none; }
+    .menu-body { padding: 80px; }
+    .menu-controls { display: flex; align-items: center; justify-content: space-between; margin-bottom: 60px; flex-wrap: wrap; gap: 20px; }
+    .search-wrap { position: relative; flex: 1; max-width: 400px; }
+    .search-wrap input { width: 100%; padding: 14px 20px 14px 48px; background: var(--white); border: 1px solid var(--line); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.3s; border-radius: 0; }
+    .search-wrap input:focus { border-color: var(--gold); }
+    .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.9rem; }
+    .cart-bar { display: flex; align-items: center; gap: 16px; background: var(--ink); padding: 14px 24px; }
+    .cart-bar span { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(247,244,239,0.6); }
+    .cart-total { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--gold); font-weight: 300; }
+    .cart-btn { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 8px 18px; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: opacity 0.2s; }
+    .cart-btn:hover { opacity: 0.8; }
+    .cart-btn.clear { background: rgba(247,244,239,0.1); color: var(--cream); }
+    .cart-btn.checkout { background: var(--gold); color: var(--ink); }
+    .category-section { margin-bottom: 72px; }
+    .category-heading { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; color: var(--ink); margin-bottom: 4px; }
+    .category-line { width: 100%; height: 1px; background: var(--line); margin: 20px 0 32px; }
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2px; }
+    .product-card { background: var(--white); padding: 32px; position: relative; transition: transform 0.3s ease; }
+    .product-card::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: var(--gold); transform: scaleX(0); transition: transform 0.3s ease; transform-origin: left; }
+    .product-card:hover { transform: translateY(-4px); }
+    .product-card:hover::after { transform: scaleX(1); }
+    .product-name { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; font-weight: 400; color: var(--ink); margin-bottom: 8px; }
+    .product-desc { font-size: 0.82rem; color: var(--muted); font-weight: 300; line-height: 1.6; margin-bottom: 24px; }
+    .product-footer { display: flex; align-items: center; justify-content: space-between; }
+    .product-price { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: var(--espresso); font-weight: 400; }
+    .add-btn { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 8px 18px; background: var(--ink); color: var(--cream); border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.3s; }
+    .add-btn:hover { background: var(--espresso); }
+    @media (max-width: 900px) { .menu-body { padding: 60px 24px; } .cart-bar { flex-wrap: wrap; } }
+  </style>
 </head>
 <body>
-  <header>
-    <nav>
-      <div class="hamburger">&#9776;</div>
-      <a href="index.html">Home</a>
-      <a href="feature.html">Features</a>
-      <a href="product.html" class="active">Menu</a>
-      <a href="contact.html">Contact Us</a>
-      <a href="customer_list.html" class="api-link">Customer List</a>
-      <a href="customer_messages.html" class="api-link">Messages</a>
-      <a href="sign-up.html">Sign Up</a>
-      <div id="user-status"></div>
-    </nav>
-  </header>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
-  <section class="hero-section" id="hero-features">
-    <div class="hero-content-overlay">
-      <h1 class="page-title">OUR MENU</h1>
-    </div>
-  </section>
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Silung Coffee</a>
+  <button class="hamburger" id="burger">☰</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="feature.html">Features</a></li>
+    <li><a href="product.html" class="active">Menu</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="customer_list.html">Customers</a></li>
+    <li><a href="customer_messages.html">Messages</a></li>
+  </ul>
+  <a href="sign-up.html" class="nav-cta">Sign Up</a>
+</nav>
 
-  <div class="product-page">
-    <div class="search-container">
-      <input type="text" id="search-input" placeholder="Search for products or category...">
-    </div>
-    
-    <div class="cart-summary">
-        Cart Total: <span id="cart-total">P0.00</span>
-        <button class="delete-cart-btn" onclick="clearCart()">Delete Cart</button>
-        <button class="delete-cart-btn" style="background-color: #4CAF50;" onclick="checkout()">Checkout</button>
-    </div>
+<div class="page-hero">
+  <p class="page-hero-label">What We Serve</p>
+  <h1>Our <em>Menu</em></h1>
+  <p>Crafted with care, served with pride.</p>
+</div>
 
-    <div id="product-list-container">
-        </div>
+<div class="marquee-wrap">
+  <div class="marquee">
+    <span class="marquee-item"><span class="marquee-dot"></span>Silung Black</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Sea-Salt Latte</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Biscoff Latte</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Pandan Cold Brew</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Spanish Latte</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Pastries</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Silung Black</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Sea-Salt Latte</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Biscoff Latte</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Pandan Cold Brew</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Spanish Latte</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Pastries</span>
   </div>
+</div>
 
-  <div id="message-container"></div>
-  
-  <footer>
-    <div class="footer-socials">
-      <a href="#"><i class="fab fa-facebook-f"></i></a>
-      <a href="#"><i class="fab fa-instagram"></i></a>
-      <a href="#"><i class="fab fa-tiktok"></i></a>
+<div class="menu-body">
+  <div class="menu-controls">
+    <div class="search-wrap">
+      <span class="search-icon">⌕</span>
+      <input type="text" id="search-input" placeholder="Search menu...">
     </div>
-    <p>&copy; 2024 Silung Coffee. All rights reserved.</p>
-  </footer>
+    <div class="cart-bar">
+      <span>Cart</span>
+      <span class="cart-total" id="cart-total">₱0.00</span>
+      <button class="cart-btn clear" onclick="clearCart()">Clear</button>
+      <button class="cart-btn checkout" onclick="checkout()">Checkout</button>
+    </div>
+  </div>
+  <div id="product-list-container"></div>
+</div>
 
-  <script>
-    // Mock Product Data (Simulating RESTful API GET /api/products)
-    const productsData = [
-      { name: "Silung Black", description: "espresso, water, tiramisu foam", price: 140.00, category: "Signature Drinks" },
-      { name: "Silung White", description: "espresso, milk, tiramisu foam", price: 140.00, category: "Signature Drinks" },
-      { name: "Spanish Latte", description: "espresso, condensed milk", price: 130.00, category: "Signature Drinks" },
-      { name: "Seasalt Latte", description: "espresso, milk, sea salt foam", price: 130.00, category: "Signature Drinks" },
-      { name: "Biscoff Latte", description: "espresso, milk, biscoff spread, foam", price: 140.00, category: "Signature Drinks" },
-      { name: "Mocha", description: "espresso, milk, dark chocolate", price: 130.00, category: "Classics" },
-      { name: "White Mocha", description: "espresso, milk, white chocolate", price: 130.00, category: "Classics" },
-      { name: "Cappuccino", description: "espresso, milk, foam", price: 120.00, category: "Classics" },
-      { name: "Americano", description: "espresso, water", price: 120.00, category: "Classics" },
-      { name: "Matcha", description: "matcha, milk", price: 130.00, category: "Non-Espresso & Refreshers" },
-      { name: "Croissant", description: "Classic French butter croissant", price: 120.00, category: "Pastries" },
-      { name: "Choco Chip Cookie", description: "A large, gooey chocolate chip cookie", price: 80.00, category: "Pastries" }
-    ];
+<div id="message-container"></div>
 
-    // Shopping Cart Simulation 
-    let cart = JSON.parse(localStorage.getItem('coffeeCart')) || [];
-    
-    function saveCart() { localStorage.setItem('coffeeCart', JSON.stringify(cart)); }
+<footer>
+  <div>
+    <div class="footer-logo">Silung Coffee</div>
+    <p class="footer-tagline">Where every sip tells a story.<br/>Tabnuan Cultural Center<br/>Mabalacat City, Pampanga</p>
+  </div>
+  <div>
+    <div class="footer-col-title">Navigate</div>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="feature.html">Features</a></li>
+      <li><a href="product.html">Menu</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="sign-up.html">Sign Up</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="footer-col-title">Connect</div>
+    <ul class="footer-links">
+      <li><a href="#">@silung.coffee</a></li>
+      <li><a href="customer_messages.html">Messages</a></li>
+      <li><a href="customer_list.html">Customer List</a></li>
+    </ul>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2024 Silung Coffee. All rights reserved.</span>
+    <a href="#" class="footer-ig">@silung.coffee ↗</a>
+  </div>
+</footer>
 
-    function calculateTotal() {
-        const total = cart.reduce((sum, item) => sum + item.price, 0);
-        document.getElementById('cart-total').textContent = `P${total.toFixed(2)}`;
-        return total;
-    }
+<script src="shared.js"></script>
+<script>
+const productsData = [
+  { name: "Silung Black", description: "espresso, water, tiramisu foam", price: 140, category: "Signature Drinks" },
+  { name: "Silung White", description: "espresso, milk, tiramisu foam", price: 140, category: "Signature Drinks" },
+  { name: "Spanish Latte", description: "espresso, condensed milk", price: 130, category: "Signature Drinks" },
+  { name: "Seasalt Latte", description: "espresso, milk, sea salt foam", price: 130, category: "Signature Drinks" },
+  { name: "Biscoff Latte", description: "espresso, milk, biscoff spread, foam", price: 140, category: "Signature Drinks" },
+  { name: "Mocha", description: "espresso, milk, dark chocolate", price: 130, category: "Classics" },
+  { name: "White Mocha", description: "espresso, milk, white chocolate", price: 130, category: "Classics" },
+  { name: "Cappuccino", description: "espresso, milk, foam", price: 120, category: "Classics" },
+  { name: "Americano", description: "espresso, water", price: 120, category: "Classics" },
+  { name: "Matcha", description: "matcha, milk", price: 130, category: "Non-Espresso & Refreshers" },
+  { name: "Croissant", description: "Classic French butter croissant", price: 120, category: "Pastries" },
+  { name: "Choco Chip Cookie", description: "A large, gooey chocolate chip cookie", price: 80, category: "Pastries" }
+];
 
-    function showMessage(text, type = 'success') {
-        const container = document.getElementById('message-container');
-        let messageBox = document.createElement('div');
-        messageBox.className = `message-box ${type}`;
-        messageBox.textContent = text;
-        container.appendChild(messageBox);
-        setTimeout(() => {
-            messageBox.classList.add('show');
-        }, 10);
-        setTimeout(() => {
-            messageBox.classList.remove('show');
-            setTimeout(() => {
-                messageBox.remove();
-            }, 500);
-        }, 3000);
-    }
+let cart = JSON.parse(localStorage.getItem('coffeeCart')) || [];
 
-    function addToCart(productName) {
-        const product = productsData.find(p => p.name === productName);
-        if (product) {
-            cart.push({ name: product.name, price: product.price });
-            saveCart();
-            calculateTotal();
-            showMessage(`${product.name} added to cart!`);
-        }
-    }
+function saveCart() { localStorage.setItem('coffeeCart', JSON.stringify(cart)); }
+function calcTotal() {
+  const t = cart.reduce((s, i) => s + i.price, 0);
+  document.getElementById('cart-total').textContent = `₱${t.toFixed(2)}`;
+  return t;
+}
+function addToCart(name) {
+  const p = productsData.find(x => x.name === name);
+  if (p) { cart.push({name: p.name, price: p.price}); saveCart(); calcTotal(); showMsg(`${p.name} added to cart!`); }
+}
+function clearCart() { cart = []; saveCart(); calcTotal(); showMsg('Cart cleared.', 'error'); }
+function checkout() {
+  const total = calcTotal();
+  if (!total) { showMsg('Your cart is empty!', 'error'); return; }
+  const name = prompt('Name for order confirmation:');
+  if (!name) { showMsg('Checkout cancelled.', 'error'); return; }
+  const email = prompt('Your email:');
+  if (!email) { showMsg('Checkout cancelled.', 'error'); return; }
+  let customers = JSON.parse(localStorage.getItem('submittedCustomers')) || [];
+  customers.push({ name, email, city: 'Online Order', signupDate: new Date().toISOString().slice(0,10), id: Date.now() });
+  localStorage.setItem('submittedCustomers', JSON.stringify(customers));
+  showMsg(`Order placed! Total: ₱${total.toFixed(2)}. Thank you, ${name}!`);
+  cart = []; saveCart(); calcTotal();
+}
 
-    function clearCart() {
-        cart = [];
-        saveCart();
-        calculateTotal();
-        showMessage('Cart cleared.', 'error');
-    }
-    
-    // UPDATED: Checkout Function now saves customer data to localStorage
-    function checkout() {
-        const total = calculateTotal();
-
-        if (total === 0) {
-            showMessage("Your cart is empty! Add items to checkout.", 'error');
-            return;
-        }
-
-        // 1. Simulate data capture for the Customer List page
-        const customerName = prompt("Please enter your name for the order confirmation:");
-        if (!customerName) {
-            showMessage("Checkout cancelled.", 'error');
-            return;
-        }
-        const customerEmail = prompt("Please enter your email:");
-        if (!customerEmail) {
-            showMessage("Checkout cancelled.", 'error');
-            return;
-        }
-
-        // 2. Prepare new customer record
-        const newCustomer = {
-            name: customerName,
-            email: customerEmail,
-            // Simple default values for other required fields
-            city: "Online Order", 
-            signupDate: new Date().toISOString().slice(0, 10),
-            id: Date.now() // Unique ID based on timestamp
-        };
-        
-        // 3. Store the new customer data in localStorage
-        let submittedCustomers = JSON.parse(localStorage.getItem('submittedCustomers')) || [];
-        submittedCustomers.push(newCustomer);
-        localStorage.setItem('submittedCustomers', JSON.stringify(submittedCustomers));
-
-        
-        // Final confirmation and notification (Product Received)
-        showMessage(`Order successfully submitted! Total: P${total.toFixed(2)}. Your order has been received.`, 'success');
-        
-        // Clear the cart after successful checkout
-        cart = [];
-        saveCart();
-        calculateTotal();
-    }
-    
-    function renderProductList(data) {
-        // ... (rest of the renderProductList function is unchanged)
-        const container = document.getElementById('product-list-container');
-        container.innerHTML = ''; 
-
-        // Group products by category
-        const categories = data.reduce((acc, product) => {
-            if (!acc[product.category]) {
-                acc[product.category] = [];
-            }
-            acc[product.category].push(product);
-            return acc;
-        }, {});
-
-        // Render each category section
-        for (const category in categories) {
-            const section = document.createElement('div');
-            section.className = 'product-section';
-            section.innerHTML = `<h3>${category}</h3><ul class="product-list"></ul>`;
-            
-            const ul = section.querySelector('.product-list');
-
-            categories[category].forEach(product => {
-                const li = document.createElement('li');
-                li.className = 'product-item';
-                
-                li.innerHTML = `
-                    <div class="product-details">
-                        <span class="product-name">${product.name}</span>
-                        <p class="product-description">${product.description}</p>
-                    </div>
-                    <span class="product-price">P${product.price.toFixed(2)}</span>
-                    <div class="product-actions">
-                        <div class="rating-system"><span class="rating-icon">&#x2615;</span></div>
-                        <button onclick="addToCart('${product.name}')">Add to cart</button>
-                    </div>
-                `;
-                ul.appendChild(li);
-            });
-
-            container.appendChild(section);
-        }
-    }
-
-    // E. API Integration: Search Feature
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initial render simulating API GET call on load
-        renderProductList(productsData);
-        calculateTotal();
-
-        // Hamburger menu toggle
-        const nav = document.querySelector('nav');
-        const burger = document.querySelector('.hamburger');
-        burger.addEventListener('click', () => {
-            nav.classList.toggle('nav-open');
-        });
-
-        // Search logic
-        const searchInput = document.getElementById('search-input');
-        searchInput.addEventListener('keyup', function(e) {
-            const query = e.target.value.toLowerCase();
-            const filteredProducts = productsData.filter(product => 
-                product.name.toLowerCase().includes(query) || 
-                product.description.toLowerCase().includes(query) ||
-                product.category.toLowerCase().includes(query)
-            );
-            renderProductList(filteredProducts);
-        });
+function renderProducts(data) {
+  const c = document.getElementById('product-list-container');
+  c.innerHTML = '';
+  const cats = data.reduce((acc, p) => { (acc[p.category] = acc[p.category] || []).push(p); return acc; }, {});
+  Object.entries(cats).forEach(([cat, items], ci) => {
+    const sec = document.createElement('div');
+    sec.className = 'category-section reveal';
+    if (ci > 0) sec.style.transitionDelay = (ci * 0.1) + 's';
+    sec.innerHTML = `<h3 class="category-heading">${cat}</h3><div class="category-line"></div><div class="product-grid">${
+      items.map(p => `<div class="product-card">
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.description}</div>
+        <div class="product-footer">
+          <span class="product-price">₱${p.price.toFixed(2)}</span>
+          <button class="add-btn" onclick="addToCart('${p.name}')">Add to Cart</button>
+        </div>
+      </div>`).join('')
+    }</div>`;
+    c.appendChild(sec);
+    // re-observe for reveal
+    sec.querySelectorAll('.product-card').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
     });
+  });
+  // Trigger product card animations
+  setTimeout(() => {
+    document.querySelectorAll('.product-card').forEach((el, i) => {
+      setTimeout(() => { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }, i * 40);
+    });
+  }, 100);
+  // Re-init reveal
+  document.querySelectorAll('.reveal').forEach(el => {
+    if (!el.classList.contains('visible')) observer.observe(el);
+  });
+}
+
+document.getElementById('search-input').addEventListener('keyup', function() {
+  const q = this.value.toLowerCase();
+  renderProducts(productsData.filter(p => p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)));
+});
+
+renderProducts(productsData);
+calcTotal();
 </script>
-  <button class="delete-cart-btn" style="background-color: #4CAF50;" onclick="checkout()">Checkout</button>
-  
 </body>
 </html>

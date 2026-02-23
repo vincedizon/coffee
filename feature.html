@@ -1,78 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Silung Coffee - Features</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <title>Features — Silung Coffee</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    body { cursor: none; }
+    .features-body { padding: 120px 80px; }
+    .features-intro { max-width: 640px; margin-bottom: 100px; }
+    .features-intro h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 4vw, 3.8rem); font-weight: 300; line-height: 1.1; margin-bottom: 24px; }
+    .features-intro h2 em { font-style: italic; color: var(--espresso); }
+    .features-intro p { font-size: 1rem; color: var(--muted); line-height: 1.8; font-weight: 300; }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-bottom: 100px; }
+    .feature-card { background: var(--white); padding: 52px 40px; position: relative; overflow: hidden; }
+    .feature-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0; background: var(--gold); transition: height 0.5s ease; }
+    .feature-card:hover::before { height: 100%; }
+    .feature-num { font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; font-weight: 300; color: rgba(26,24,20,0.06); line-height: 1; margin-bottom: 32px; }
+    .feature-title { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 400; margin-bottom: 16px; color: var(--ink); }
+    .feature-text { font-size: 0.9rem; line-height: 1.8; color: var(--muted); font-weight: 300; }
+    .gallery-section { margin-bottom: 100px; }
+    .gallery-label { margin-bottom: 40px; }
+    .gallery-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 2px; height: 480px; }
+    .gallery-item { background: var(--espresso); overflow: hidden; position: relative; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: opacity 0.4s ease, transform 0.5s ease; }
+    .gallery-item:hover img { opacity: 0.9; transform: scale(1.04); }
+    .gallery-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg, #3B2A1A 0%, #1A1814 100%); display: flex; align-items: center; justify-content: center; }
+    .gallery-placeholder span { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: rgba(200,169,110,0.4); letter-spacing: 0.2em; text-transform: uppercase; }
+    .video-section { }
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .video-wrap { background: var(--ink); overflow: hidden; aspect-ratio: 16/9; }
+    .video-wrap video { width: 100%; height: 100%; object-fit: cover; }
+    @media (max-width: 900px) {
+      .features-body { padding: 60px 24px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr; height: auto; }
+      .gallery-item { height: 240px; }
+      .video-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <nav>
-      <div class="hamburger">☰</div>
-      <a href="index.html">Home</a>
-      <a href="feature.html">Features</a>
-      <a href="product.html">Menu</a>
-      <a href="contact.html">Contact Us</a>
-      <a href="customer_list.html" class="api-link">Customer List</a>
-      <a href="customer_messages.html" class="api-link">Messages</a>
-      <a href="sign-up.html">Sign Up</a>
-      <div id="user-status"></div>
-    </nav>
-</header>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
-  <section class="hero-section" id="hero-features">
-    <div class="hero-content-overlay">
-      <div class="logo-container">
-        <img src="img/logo.jpg" alt="Silung Coffee Logo" class="main-logo">
-      </div>
-      <h1>Our Unique Features</h1>
-      <p>More than just a sip — an experience.</p>
-      <a href="#features" class="btn-primary">Discover More</a>
-    </div>
-  </section>
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Silung Coffee</a>
+  <button class="hamburger" id="burger">☰</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="feature.html" class="active">Features</a></li>
+    <li><a href="product.html">Menu</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="customer_list.html">Customers</a></li>
+    <li><a href="customer_messages.html">Messages</a></li>
+  </ul>
+  <a href="sign-up.html" class="nav-cta">Sign Up</a>
+</nav>
 
-  <div class="home-image-gallery">
-    <img src="img/coffee.jpeg" alt="Silung Coffee Cup" class="gallery-item">
-    <img src="img/coffee1.jpg" alt="Freshly brewed coffee" class="gallery-item">
-    <img src="img/coffee2.jpg" alt="Cozy coffee shop interior" class="gallery-item">
+<div class="page-hero">
+  <p class="page-hero-label">What Sets Us Apart</p>
+  <h1>Our <em>Features</em></h1>
+  <p>More than just a sip — an experience.</p>
+</div>
+
+<div class="marquee-wrap">
+  <div class="marquee">
+    <span class="marquee-item"><span class="marquee-dot"></span>Local Sourcing</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Art & Culture</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Handcrafted Drinks</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Community First</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Tabnuan Center</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Local Sourcing</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Art & Culture</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Handcrafted Drinks</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Community First</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Tabnuan Center</span>
+  </div>
+</div>
+
+<div class="features-body">
+  <div class="features-intro reveal">
+    <div class="section-label">Our Story</div>
+    <h2>Why choose <em>Silung</em> Coffee?</h2>
+    <p>We believe a great cup of coffee is just the beginning. At Silung, we've built a space where culture, community, and creativity thrive together — right in the heart of Mabalacat.</p>
   </div>
 
-  <section class="feature-section" id="features">
-    <h2 class="section-title">Why Choose Silung Coffee?</h2>
-    <div class="feature-grid">
-      <div class="feature-item">
-        <div class="icon"><i class="fa-solid fa-seedling"></i></div>
-        <h3>Authentic Local Sourcing</h3>
-        <p>We partner with local farmers in the Cordillera region to bring you single-origin Arabica beans, ensuring every cup supports local communities and offers a taste of the Philippines' rich coffee heritage.</p>
-      </div>
+  <div class="features-grid">
+    <div class="feature-card reveal">
+      <div class="feature-num">01</div>
+      <div class="feature-title">Authentic Local Sourcing</div>
+      <p class="feature-text">We partner with local farmers in the Cordillera region to bring you single-origin Arabica beans, ensuring every cup supports local communities and offers a taste of the Philippines' rich coffee heritage.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-1">
+      <div class="feature-num">02</div>
+      <div class="feature-title">A Hub for Art & Culture</div>
+      <p class="feature-text">Nestled within the Tabnuan Cultural Center, our café doubles as an art gallery. We feature rotating exhibits from local artists, poets, and musicians — a space where creativity flourishes.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-2">
+      <div class="feature-num">03</div>
+      <div class="feature-title">Handcrafted Signature Drinks</div>
+      <p class="feature-text">Our skilled baristas craft a range of unique signature beverages, including our popular Sea-Salt Latte and Pandan Cold Brew — a fusion of traditional Filipino flavors and modern coffee artistry.</p>
+    </div>
+  </div>
 
-      <div class="feature-item">
-        <div class="icon"><i class="fa-solid fa-palette"></i></div>
-        <h3>A Hub for Art & Culture</h3>
-        <p>Nestled within the Tabnuan Cultural Center, our café doubles as an art gallery. We feature rotating exhibits from local artists, poets, and musicians, creating a space where creativity flourishes and community thrives.</p>
+  <div class="gallery-section reveal">
+    <div class="section-label gallery-label">Inside Silung</div>
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img src="img/coffee.jpeg" alt="Silung Coffee" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="gallery-placeholder" style="display:none"><span>Coffee</span></div>
       </div>
-
-      <div class="feature-item">
-        <div class="icon"><i class="fa-solid fa-mug-hot"></i></div>
-        <h3>Handcrafted Signature Drinks</h3>
-        <p>Our skilled baristas craft a range of unique signature beverages, including our popular Sea-Salt Latte and Pandan Cold Brew. These innovative creations are a fusion of traditional Filipino flavors and modern coffee artistry.</p>
+      <div class="gallery-item">
+        <img src="img/coffee1.jpg" alt="Freshly brewed" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="gallery-placeholder" style="display:none"><span>Brew</span></div>
+      </div>
+      <div class="gallery-item">
+        <img src="img/coffee2.jpg" alt="Interior" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="gallery-placeholder" style="display:none"><span>Space</span></div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <section class="video-highlights">
-    <h2 class="section-title">Featured Videos</h2>
-    <div class="video-container">
-      <video class="highlight-video" controls loop muted autoplay playsinline>
-        <source src="media/silung.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-      <video class="highlight-video" controls loop muted autoplay playsinline>
-        <source src="media/silung2.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
+  <div class="video-section reveal">
+    <div class="section-label" style="margin-bottom:40px">Featured Videos</div>
+    <div class="video-grid">
+      <div class="video-wrap">
+        <video controls loop muted autoplay playsinline>
+          <source src="media/silung.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="video-wrap">
+        <video controls loop muted autoplay playsinline>
+          <source src="media/silung2.mp4" type="video/mp4">
+        </video>
+      </div>
     </div>
-  </section>
+  </div>
+</div>
+
+<footer>
+  <div>
+    <div class="footer-logo">Silung Coffee</div>
+    <p class="footer-tagline">Where every sip tells a story.<br/>Tabnuan Cultural Center<br/>Mabalacat City, Pampanga</p>
+  </div>
+  <div>
+    <div class="footer-col-title">Navigate</div>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="feature.html">Features</a></li>
+      <li><a href="product.html">Menu</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="sign-up.html">Sign Up</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="footer-col-title">Connect</div>
+    <ul class="footer-links">
+      <li><a href="#">@silung.coffee</a></li>
+      <li><a href="customer_messages.html">Messages</a></li>
+      <li><a href="customer_list.html">Customer List</a></li>
+    </ul>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2024 Silung Coffee. All rights reserved.</span>
+    <a href="#" class="footer-ig">@silung.coffee ↗</a>
+  </div>
+</footer>
+
+<script src="shared.js"></script>
+</body>
+</html>
